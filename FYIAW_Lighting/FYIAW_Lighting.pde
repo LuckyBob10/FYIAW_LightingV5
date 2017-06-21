@@ -86,19 +86,20 @@ void setup() {
       println(" - Configuring LED board");
       try {
         opc = new OPC(this, config.getJSONObject("led_board").getString("opc_address"), config.getJSONObject("led_board").getInt("opc_port"));
-        int led_spacing_x = floor(config.getJSONObject("general").getInt("capture_size_x") / ((config.getJSONObject("led_board").getInt("pixels_x") + 2) * config.getJSONObject("led_board").getFloat("spacing_x")));
-        int led_spacing_y = floor(config.getJSONObject("general").getInt("capture_size_y") / ((config.getJSONObject("led_board").getInt("pixels_y") + 2) * config.getJSONObject("led_board").getFloat("spacing_y")));
+        int led_spacing_x = floor(config.getJSONObject("general").getInt("capture_size_x") / (config.getJSONObject("led_board").getInt("pixels_x") * config.getJSONObject("led_board").getFloat("spacing_x")));
+        int led_spacing_y = floor(config.getJSONObject("general").getInt("capture_size_y") / (config.getJSONObject("led_board").getInt("pixels_y") * config.getJSONObject("led_board").getFloat("spacing_y")));
         println(" - LED board pixel count: " + config.getJSONObject("led_board").getInt("pixels_x") + "x" + config.getJSONObject("led_board").getInt("pixels_y"));
         println(" - LED board capture pixel spacing: " + led_spacing_x + "x" + led_spacing_y);
         
         for (int led_strip=0; led_strip<config.getJSONObject("led_board").getInt("pixels_y"); led_strip++) {
           println(" - Adding LED strip #" + led_strip);
+          // ledStrip(int index, int count, float x, float y, float spacing, float angle, boolean reversed)
           opc.ledStrip(
             led_strip * config.getJSONObject("led_board").getInt("pixels_x"),
-            (led_strip * config.getJSONObject("led_board").getInt("pixels_x")) + config.getJSONObject("led_board").getInt("pixels_x"),
+            config.getJSONObject("led_board").getInt("pixels_x"),
             config.getJSONObject("general").getInt("capture_size_x") / 2,
-            (led_spacing_y * led_strip) - (led_spacing_y / 2),
-            config.getJSONObject("general").getInt("capture_size_x") / config.getJSONObject("led_board").getInt("pixels_x"),
+            (led_strip * led_spacing_y) + (led_spacing_y / 2),
+            led_spacing_x,
             0,
             false
           );

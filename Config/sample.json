@@ -7,7 +7,7 @@
 		"target_frame_rate": 80
 	},
 	"led_board": {
-		"enabled": "False",
+		"enabled": "True",
 		"opc_address": "127.0.0.1",
 		"opc_port": 7890,
 		"pixels_x": 60,
