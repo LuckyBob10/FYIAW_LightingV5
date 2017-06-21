@@ -15,7 +15,7 @@
         <property name="first_id">1000</property>
         <property name="help_provider">none</property>
         <property name="internationalize">0</property>
-        <property name="name">LightingDesigner</property>
+        <property name="name">FYIAW_LightDesigner</property>
         <property name="namespace"></property>
         <property name="path">.</property>
         <property name="precompiled_header"></property>
@@ -42,12 +42,12 @@
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size"></property>
-            <property name="name">MainFrame</property>
+            <property name="name">Frame_Main</property>
             <property name="pos"></property>
             <property name="size">700,600</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass"></property>
-            <property name="title">FYIAW Lighting Designer v1</property>
+            <property name="title">FYIAW LightDesigner v1</property>
             <property name="tooltip"></property>
             <property name="window_extra_style"></property>
             <property name="window_name"></property>
@@ -125,7 +125,7 @@
                 <property name="minimize_button">0</property>
                 <property name="minimum_size"></property>
                 <property name="moveable">1</property>
-                <property name="name">MainFrame_Toolbar</property>
+                <property name="name">Toolbar_Main</property>
                 <property name="packing">1</property>
                 <property name="pane_border">1</property>
                 <property name="pane_position"></property>
@@ -210,16 +210,16 @@
                     <event name="OnUpdateUI"></event>
                 </object>
             </object>
-            <object class="wxBoxSizer" expanded="1">
+            <object class="wxBoxSizer" expanded="0">
                 <property name="minimum_size"></property>
-                <property name="name">MainFrame_Boxer</property>
+                <property name="name">Boxer_Main</property>
                 <property name="orient">wxVERTICAL</property>
                 <property name="permission">none</property>
-                <object class="sizeritem" expanded="1">
+                <object class="sizeritem" expanded="0">
                     <property name="border">5</property>
                     <property name="flag">wxALL|wxEXPAND</property>
                     <property name="proportion">1</property>
-                    <object class="wxListbook" expanded="1">
+                    <object class="wxListbook" expanded="0">
                         <property name="BottomDockable">1</property>
                         <property name="LeftDockable">1</property>
                         <property name="RightDockable">1</property>
@@ -255,7 +255,7 @@
                         <property name="minimize_button">0</property>
                         <property name="minimum_size"></property>
                         <property name="moveable">1</property>
-                        <property name="name">MainListBook</property>
+                        <property name="name">ListBook_Main</property>
                         <property name="pane_border">1</property>
                         <property name="pane_position"></property>
                         <property name="pane_size"></property>
@@ -297,7 +297,7 @@
                         <event name="OnSetFocus"></event>
                         <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
-                        <object class="listbookpage" expanded="1">
+                        <object class="listbookpage" expanded="0">
                             <property name="bitmap"></property>
                             <property name="label">General</property>
                             <property name="select">0</property>
@@ -580,11 +580,11 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="listbookpage" expanded="1">
+                        <object class="listbookpage" expanded="0">
                             <property name="bitmap"></property>
                             <property name="label">LED Board</property>
                             <property name="select">0</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -658,7 +658,7 @@
                                 <event name="OnSetFocus"></event>
                                 <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">Boxer_LEDBoard</property>
                                     <property name="orient">wxVERTICAL</property>
@@ -746,11 +746,11 @@
                                             <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxPropertyGrid" expanded="1">
+                                        <object class="wxPropertyGrid" expanded="0">
                                             <property name="BottomDockable">1</property>
                                             <property name="LeftDockable">1</property>
                                             <property name="RightDockable">1</property>
@@ -940,11 +940,11 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="listbookpage" expanded="1">
+                        <object class="listbookpage" expanded="0">
                             <property name="bitmap"></property>
                             <property name="label">DMX Settings</property>
                             <property name="select">0</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -1018,7 +1018,7 @@
                                 <event name="OnSetFocus"></event>
                                 <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">Boxer_DMX</property>
                                     <property name="orient">wxVERTICAL</property>
@@ -1106,11 +1106,11 @@
                                             <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxPropertyGrid" expanded="1">
+                                        <object class="wxPropertyGrid" expanded="0">
                                             <property name="BottomDockable">1</property>
                                             <property name="LeftDockable">1</property>
                                             <property name="RightDockable">1</property>
@@ -1232,21 +1232,21 @@
                                                 <property name="permission">protected</property>
                                                 <property name="type">Float</property>
                                             </object>
-                                            <object class="propGridItem" expanded="1">
+                                            <object class="propGridItem" expanded="0">
                                                 <property name="help"></property>
                                                 <property name="label">Static Color</property>
                                                 <property name="name">DMX_CategoryStaticColor</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Category</property>
                                             </object>
-                                            <object class="propGridItem" expanded="1">
+                                            <object class="propGridItem" expanded="0">
                                                 <property name="help"></property>
                                                 <property name="label">Static Color</property>
                                                 <property name="name">DMX_StaticColor</property>
                                                 <property name="permission">protected</property>
                                                 <property name="type">Colour</property>
                                             </object>
-                                            <object class="propGridItem" expanded="1">
+                                            <object class="propGridItem" expanded="0">
                                                 <property name="help"></property>
                                                 <property name="label">Static Color Enabled On Start</property>
                                                 <property name="name">DMX_StaticColorEnabled</property>
@@ -1258,11 +1258,11 @@
                                 </object>
                             </object>
                         </object>
-                        <object class="listbookpage" expanded="1">
+                        <object class="listbookpage" expanded="0">
                             <property name="bitmap"></property>
                             <property name="label">DMX Groups</property>
                             <property name="select">1</property>
-                            <object class="wxPanel" expanded="1">
+                            <object class="wxPanel" expanded="0">
                                 <property name="BottomDockable">1</property>
                                 <property name="LeftDockable">1</property>
                                 <property name="RightDockable">1</property>
@@ -1336,16 +1336,16 @@
                                 <event name="OnSetFocus"></event>
                                 <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
-                                <object class="wxBoxSizer" expanded="1">
+                                <object class="wxBoxSizer" expanded="0">
                                     <property name="minimum_size"></property>
                                     <property name="name">Boxer_Groups</property>
                                     <property name="orient">wxVERTICAL</property>
                                     <property name="permission">none</property>
-                                    <object class="sizeritem" expanded="1">
+                                    <object class="sizeritem" expanded="0">
                                         <property name="border">5</property>
                                         <property name="flag">wxEXPAND | wxALL</property>
                                         <property name="proportion">1</property>
-                                        <object class="wxChoicebook" expanded="1">
+                                        <object class="wxChoicebook" expanded="0">
                                             <property name="BottomDockable">1</property>
                                             <property name="LeftDockable">1</property>
                                             <property name="RightDockable">1</property>
@@ -1422,10 +1422,10 @@
                                             <event name="OnSetFocus"></event>
                                             <event name="OnSize"></event>
                                             <event name="OnUpdateUI"></event>
-                                            <object class="choicebookpage" expanded="1">
+                                            <object class="choicebookpage" expanded="0">
                                                 <property name="label">Group X: &lt;Description&gt;</property>
                                                 <property name="select">0</property>
-                                                <object class="wxPanel" expanded="1">
+                                                <object class="wxPanel" expanded="0">
                                                     <property name="BottomDockable">1</property>
                                                     <property name="LeftDockable">1</property>
                                                     <property name="RightDockable">1</property>
@@ -1499,16 +1499,16 @@
                                                     <event name="OnSetFocus"></event>
                                                     <event name="OnSize"></event>
                                                     <event name="OnUpdateUI"></event>
-                                                    <object class="wxBoxSizer" expanded="1">
+                                                    <object class="wxBoxSizer" expanded="0">
                                                         <property name="minimum_size"></property>
                                                         <property name="name">Boxer_Group_X</property>
                                                         <property name="orient">wxVERTICAL</property>
                                                         <property name="permission">none</property>
-                                                        <object class="sizeritem" expanded="1">
+                                                        <object class="sizeritem" expanded="0">
                                                             <property name="border">5</property>
                                                             <property name="flag">wxALL|wxEXPAND</property>
                                                             <property name="proportion">0</property>
-                                                            <object class="wxPropertyGrid" expanded="1">
+                                                            <object class="wxPropertyGrid" expanded="0">
                                                                 <property name="BottomDockable">1</property>
                                                                 <property name="LeftDockable">1</property>
                                                                 <property name="RightDockable">1</property>
@@ -1588,63 +1588,63 @@
                                                                 <event name="OnSetFocus"></event>
                                                                 <event name="OnSize"></event>
                                                                 <event name="OnUpdateUI"></event>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Group Description</property>
                                                                     <property name="name">GX_Description</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">String</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Group Fixture Count</property>
                                                                     <property name="name">GX_FixtureCount</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Int</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Group Brightness</property>
                                                                     <property name="name">GX_Brightness</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Float</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Smoothing (Frames)</property>
                                                                     <property name="name">GX_Smoothing</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Int</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Beat Effect Enabled</property>
                                                                     <property name="name">GX_BeatEffect_Enabled</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Bool</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Beat Effect Trigger Every N Frames</property>
                                                                     <property name="name">GX_BeatEffect_Trigger</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Int</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Beat Effect Trigger Weight</property>
                                                                     <property name="name">GX_BeatEffect_Weight</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Float</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Static Color</property>
                                                                     <property name="name">GX_StaticColor</property>
                                                                     <property name="permission">protected</property>
                                                                     <property name="type">Colour</property>
                                                                 </object>
-                                                                <object class="propGridItem" expanded="1">
+                                                                <object class="propGridItem" expanded="0">
                                                                     <property name="help"></property>
                                                                     <property name="label">Static Color Enabled On Start</property>
                                                                     <property name="name">GX_StaticColor_Enabled</property>
@@ -1653,11 +1653,11 @@
                                                                 </object>
                                                             </object>
                                                         </object>
-                                                        <object class="sizeritem" expanded="1">
+                                                        <object class="sizeritem" expanded="0">
                                                             <property name="border">5</property>
                                                             <property name="flag">wxALL</property>
                                                             <property name="proportion">0</property>
-                                                            <object class="wxStaticText" expanded="1">
+                                                            <object class="wxStaticText" expanded="0">
                                                                 <property name="BottomDockable">1</property>
                                                                 <property name="LeftDockable">1</property>
                                                                 <property name="RightDockable">1</property>
@@ -1736,11 +1736,11 @@
                                                                 <event name="OnUpdateUI"></event>
                                                             </object>
                                                         </object>
-                                                        <object class="sizeritem" expanded="1">
+                                                        <object class="sizeritem" expanded="0">
                                                             <property name="border">5</property>
                                                             <property name="flag">wxEXPAND | wxALL</property>
                                                             <property name="proportion">1</property>
-                                                            <object class="wxListbook" expanded="1">
+                                                            <object class="wxListbook" expanded="0">
                                                                 <property name="BottomDockable">1</property>
                                                                 <property name="LeftDockable">1</property>
                                                                 <property name="RightDockable">1</property>
@@ -1818,11 +1818,11 @@
                                                                 <event name="OnSetFocus"></event>
                                                                 <event name="OnSize"></event>
                                                                 <event name="OnUpdateUI"></event>
-                                                                <object class="listbookpage" expanded="1">
+                                                                <object class="listbookpage" expanded="0">
                                                                     <property name="bitmap"></property>
                                                                     <property name="label">Fixture Y</property>
                                                                     <property name="select">0</property>
-                                                                    <object class="wxPanel" expanded="1">
+                                                                    <object class="wxPanel" expanded="0">
                                                                         <property name="BottomDockable">1</property>
                                                                         <property name="LeftDockable">1</property>
                                                                         <property name="RightDockable">1</property>
@@ -1896,16 +1896,16 @@
                                                                         <event name="OnSetFocus"></event>
                                                                         <event name="OnSize"></event>
                                                                         <event name="OnUpdateUI"></event>
-                                                                        <object class="wxBoxSizer" expanded="1">
+                                                                        <object class="wxBoxSizer" expanded="0">
                                                                             <property name="minimum_size"></property>
                                                                             <property name="name">Boxer_GXFY</property>
                                                                             <property name="orient">wxVERTICAL</property>
                                                                             <property name="permission">none</property>
-                                                                            <object class="sizeritem" expanded="1">
+                                                                            <object class="sizeritem" expanded="0">
                                                                                 <property name="border">5</property>
                                                                                 <property name="flag">wxALL|wxEXPAND</property>
                                                                                 <property name="proportion">1</property>
-                                                                                <object class="wxPropertyGrid" expanded="1">
+                                                                                <object class="wxPropertyGrid" expanded="0">
                                                                                     <property name="BottomDockable">1</property>
                                                                                     <property name="LeftDockable">1</property>
                                                                                     <property name="RightDockable">1</property>
@@ -1985,49 +1985,49 @@
                                                                                     <event name="OnSetFocus"></event>
                                                                                     <event name="OnSize"></event>
                                                                                     <event name="OnUpdateUI"></event>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help"></property>
                                                                                         <property name="label">Fixture Name</property>
                                                                                         <property name="name">GXFY_Name</property>
                                                                                         <property name="permission">protected</property>
                                                                                         <property name="type">String</property>
                                                                                     </object>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help"></property>
                                                                                         <property name="label">Fixture Type</property>
                                                                                         <property name="name">GXFY_Type</property>
                                                                                         <property name="permission">protected</property>
                                                                                         <property name="type">MultiChoice</property>
                                                                                     </object>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help">Use format &quot;[x,y,z]&quot; for RGB fixtures</property>
                                                                                         <property name="label">Fixture DMX Channel(s) (&quot;[1, 2, ..., N]&quot;)</property>
                                                                                         <property name="name">GXFY_DMXChannels</property>
                                                                                         <property name="permission">protected</property>
                                                                                         <property name="type">String</property>
                                                                                     </object>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help">Use format &quot;[x,y,z]&quot; for RGB fixtures</property>
                                                                                         <property name="label">Capture Pixel (&quot;[X, Y]&quot;)</property>
                                                                                         <property name="name">GXFY_CapturePixel</property>
                                                                                         <property name="permission">protected</property>
                                                                                         <property name="type">String</property>
                                                                                     </object>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help"></property>
                                                                                         <property name="label">Fixture Brightness (Offset From Group)</property>
                                                                                         <property name="name">GXFY_Brightness</property>
                                                                                         <property name="permission">protected</property>
                                                                                         <property name="type">Float</property>
                                                                                     </object>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help"></property>
                                                                                         <property name="label">Hue Offset (0-360)</property>
                                                                                         <property name="name">GXFY_HueOffset</property>
                                                                                         <property name="permission">protected</property>
                                                                                         <property name="type">Int</property>
                                                                                     </object>
-                                                                                    <object class="propGridItem" expanded="1">
+                                                                                    <object class="propGridItem" expanded="0">
                                                                                         <property name="help"></property>
                                                                                         <property name="label">Fixed Value (0-255)</property>
                                                                                         <property name="name">GXFY_FixedValue</property>
