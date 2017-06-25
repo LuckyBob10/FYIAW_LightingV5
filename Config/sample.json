@@ -4,7 +4,7 @@
 		"capture_size_y": 200,
 		"initial_x": 5,
 		"initial_y": 246,
-		"target_frame_rate": 80
+		"target_frame_rate": 60
 	},
 	"led_board": {
 		"enabled": "True",
@@ -39,22 +39,31 @@
 						"type": "rgb",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
-						"hue_offset": 0,
+						"hue_offset": 180,
 						"invert": "False",
 						"channels": [5, 6, 7],
-						"capture_pixel": [125, 63]
+						"capture_pixel": [1, 1]
 					},
 					{
 						"name": "Moving Head #1 X",
 						"type": "monochrome",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
-						"hue_offset": 0,
 						"invert": "False",
 						"channel": 10,
 						"capture_pixel": [125, 63],
 						"sample_from": "red"
-					},	
+					},
+					{
+						"name": "Flood #3",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [50, 51, 52],
+						"capture_pixel": [125, 63]
+					},					
 					{
 						"name": "Moving Head 1 - auto program mode",
 						"type": "fixed",
@@ -86,12 +95,21 @@
 						"type": "monochrome",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
-						"hue_offset": 0,
 						"invert": "False",
 						"channel": 11,
 						"capture_pixel": [125, 63],
 						"sample_from": "red"
-					},	
+					},
+					{
+						"name": "Moving Head #2 X",
+						"type": "monochrome",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"invert": "False",
+						"channel": 11,
+						"capture_pixel": [250, 25],
+						"sample_from": "rgb"
+					},
 					{
 						"name": "Moving Head 2 - auto program mode",
 						"type": "fixed",

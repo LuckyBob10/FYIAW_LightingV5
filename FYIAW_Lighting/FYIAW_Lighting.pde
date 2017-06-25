@@ -5,11 +5,6 @@ import processing.serial.*;
 
 String config_file = "../../config/sample.json";
 
-
-OPC        opc;
-PImage     screen_shot;
-JSONObject config;
-
 GraphicsEnvironment ge   = GraphicsEnvironment.getLocalGraphicsEnvironment();
 GraphicsDevice[]    gs   = ge.getScreenDevices();
 DisplayMode         mode = gs[0].getDisplayMode();
@@ -42,14 +37,14 @@ void setup() {
     );
     
     // Get number of DMX lighting groups to calculate window Y size
-    JSONArray dmx_groups = config.getJSONObject("dmx").getJSONArray("dmx_groups");
-    println(" - Found " + dmx_groups.size() + " DMX lighting group(s) in config");
-    int size_y = config.getJSONObject("general").getInt("capture_size_y") + window_size_offset_y + (window_size_dmx_group_height * dmx_groups.size());
+    dmx_groups = config.getJSONObject("dmx").getJSONArray("dmx_groups");
+    println(" - Found " + dmx_groups.size() + " DMX group(s) in config");
+    window_size_y = config.getJSONObject("general").getInt("capture_size_y") + window_size_offset_y + (window_size_dmx_group_height * dmx_groups.size());
     
     // Get max number of fixtures to calculate window X size and number of DMX fixtures
     for (int i=0; i<dmx_groups.size(); i++) {
       println(" - Counting fixtures in DMX group: " + i);
-      JSONArray group_fixtures = dmx_groups.getJSONObject(i).getJSONArray("fixtures");
+      group_fixtures = dmx_groups.getJSONObject(i).getJSONArray("fixtures");
       if (group_fixtures.size() > dmx_group_max_fixtures) {
         dmx_group_max_fixtures = group_fixtures.size();
       }
@@ -58,14 +53,14 @@ void setup() {
     println(" - Total number of DMX fixtures: " + dmx_universe_size);
     println(" - Max number of fixtures in a DMX group: " + dmx_group_max_fixtures);
     int size_min_x = window_size_dmx_fixture_width * dmx_group_max_fixtures;
-    int size_x = config.getJSONObject("general").getInt("capture_size_x") + window_size_offset_x;
-    if (size_x < size_min_x) {
-      size_x = size_min_x;
+    window_size_x = config.getJSONObject("general").getInt("capture_size_x") + window_size_offset_x;
+    if (window_size_x < size_min_x) {
+      window_size_x = size_min_x;
     }
       
     // Set window size
-    println(" - Final window size: " + size_x + "x" + size_y);
-    size(size_x, size_y);
+    println(" - Final window size: " + window_size_x + "x" + window_size_y);
+    size(window_size_x, window_size_y);
     
     // Set frame rate
     println(" - Target frame rate: " + config.getJSONObject("general").getInt("target_frame_rate") + "fps");
@@ -76,7 +71,26 @@ void setup() {
     frame.setResizable(false);
     
     // Draw initial layout
-    fill(0);
+    background(0);
+    fill(255);
+    stroke(255);
+    
+    // Draw DMX groups
+    println(" - Drawing DMX group labels");
+    textSize(10);
+    for (int i=0; i<dmx_groups.size(); i++) {
+//      line(
+//        0,
+//        config.getJSONObject("general").getInt("capture_size_y") + (i * 32),
+//        window_size_x,
+//        config.getJSONObject("general").getInt("capture_size_y") + (i * 32)
+//      );
+      text(
+        "DMX Group: " + dmx_groups.getJSONObject(i).getString("name"),
+        0,
+        config.getJSONObject("general").getInt("capture_size_y") + 8 + (i * 32)
+      );
+    }
     
     // Set up LED board
     if (!config.getJSONObject("led_board").getBoolean("enabled")) {
@@ -116,6 +130,7 @@ void setup() {
     // Set up DMX output device
     if (!config.getJSONObject("dmx").getJSONObject("general").getBoolean("enabled")) {
       println(" - DMX output disabled for this session");
+      dmx_enabled = false;
     }
     else {
       println(" - Configuring DMXPro output");
@@ -136,6 +151,10 @@ void setup() {
     
     // Set up screen capture object
     desktop = new BufferedImage(mode.getWidth(), config.getJSONObject("general").getInt("capture_size_y"), BufferedImage.TYPE_INT_RGB);
+    
+    // Reset drawing settings
+    stroke(0);
+    noStroke();
   }
 }
 
@@ -158,6 +177,92 @@ void draw() {
     width,
     config.getJSONObject("general").getInt("capture_size_y")
   );
+  
+  // DMX
+  int[] dmx_data = new int[255];
+  if (dmx_test) {
+    dmx_data = dmx_test();
+  }
+  else if (dmx_fixed_color) {
+    dmx_data = dmx_fixed_color();
+  }
+  else {
+    // Walk all DMX groups
+    for (int group_num=0; group_num<dmx_groups.size(); group_num++) {
+      // Walk all DMX group fixtures
+      group = dmx_groups.getJSONObject(group_num);
+      group_fixtures = group.getJSONArray("fixtures");
+      
+      for (int fixture_num=0; fixture_num<group_fixtures.size(); fixture_num++) {
+        fixture = group_fixtures.getJSONObject(fixture_num);
+        fixture_type = fixture.getString("type");
+        
+        // RGB fixture
+        if (fixture_type.equals("rgb")) {
+          // Set DMX channel data
+          int[] fixture_color = dmx_fixture_rgb(fixture, group);
+          dmx_data[fixture.getJSONArray("channels").getInt(0)] = fixture_color[0];
+          dmx_data[fixture.getJSONArray("channels").getInt(1)] = fixture_color[1];
+          dmx_data[fixture.getJSONArray("channels").getInt(2)] = fixture_color[2];
+          
+          // Draw fixture
+          fill(
+            fixture_color[0],
+            fixture_color[1],
+            fixture_color[2]
+          );
+          rect(
+            fixture_num * 24,
+            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 10,
+            16,
+            16
+          );
+        }
+        
+        // Monochrome fixture 
+        else if (fixture_type.equals("monochrome")) {
+          int fixture_channel = fixture.getInt("channel");
+          // Set DMX channel data
+          dmx_data[fixture_channel] = dmx_fixture_monochrome(fixture, group);
+          
+          // Draw fixture
+          fill(dmx_data[fixture_channel], dmx_data[fixture_channel], dmx_data[fixture_channel]);
+          ellipse(
+            fixture_num * 24 + 8,
+            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 18,
+            16,
+            16
+          );
+        }
+        
+        // Static fixture
+        else if (fixture_type.equals("fixed")) {
+          // Set DMX channel data
+          int channel_value = fixture.getInt("value");
+          dmx_data[fixture.getInt("channel")] = channel_value;
+          
+          // Draw fixture
+          fill(channel_value, channel_value, channel_value);
+          triangle(
+            fixture_num * 24,
+            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 26,
+            fixture_num * 24 + 8,
+            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 10,
+            fixture_num * 24 + 16,
+            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 26
+          );
+        }
+        
+        // Unhandled fixture type
+        else {
+          println(" - Unhandled fixture type: '" + fixture_type + "', name: " + fixture.getString("name"));
+        }
+      }
+    }
+  }
+  if (dmx_enabled) {
+    dmx.set(0, dmx_data);
+  }
   
   // Set frame title
   frame.setTitle(
