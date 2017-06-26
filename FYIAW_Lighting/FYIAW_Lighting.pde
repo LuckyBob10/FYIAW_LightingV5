@@ -70,7 +70,12 @@ void setup() {
     }
     frame.setResizable(false);
     
+    // Set beat pixel
+    beat_pixel_x = config.getJSONObject("general").getInt("beat_pixel_x");
+    beat_pixel_y = config.getJSONObject("general").getInt("beat_pixel_y");
+    
     // Draw initial layout
+    colorMode(RGB, 255, 255, 255);
     background(0);
     fill(255);
     stroke(255);
@@ -79,12 +84,6 @@ void setup() {
     println(" - Drawing DMX group labels");
     textSize(10);
     for (int i=0; i<dmx_groups.size(); i++) {
-//      line(
-//        0,
-//        config.getJSONObject("general").getInt("capture_size_y") + (i * 32),
-//        window_size_x,
-//        config.getJSONObject("general").getInt("capture_size_y") + (i * 32)
-//      );
       text(
         "DMX Group: " + dmx_groups.getJSONObject(i).getString("name"),
         0,
@@ -100,6 +99,7 @@ void setup() {
       println(" - Configuring LED board");
       try {
         opc = new OPC(this, config.getJSONObject("led_board").getString("opc_address"), config.getJSONObject("led_board").getInt("opc_port"));
+        // TODO: Use board_x1~board_y2 for placement of capture area
         int led_spacing_x = floor(config.getJSONObject("general").getInt("capture_size_x") / (config.getJSONObject("led_board").getInt("pixels_x") * config.getJSONObject("led_board").getFloat("spacing_x")));
         int led_spacing_y = floor(config.getJSONObject("general").getInt("capture_size_y") / (config.getJSONObject("led_board").getInt("pixels_y") * config.getJSONObject("led_board").getFloat("spacing_y")));
         println(" - LED board pixel count: " + config.getJSONObject("led_board").getInt("pixels_x") + "x" + config.getJSONObject("led_board").getInt("pixels_y"));
@@ -153,8 +153,8 @@ void setup() {
     desktop = new BufferedImage(mode.getWidth(), config.getJSONObject("general").getInt("capture_size_y"), BufferedImage.TYPE_INT_RGB);
     
     // Reset drawing settings
-    stroke(0);
-    noStroke();
+    stroke(127);
+    //noStroke();
   }
 }
 
@@ -177,6 +177,17 @@ void draw() {
     width,
     config.getJSONObject("general").getInt("capture_size_y")
   );
+  
+  // Beat detection
+  beat_pixel_val = get(beat_pixel_x, beat_pixel_y);
+  if (
+    (beat_pixel_val == color(255) || beat_pixel_val == color(0)) && 
+    beat_pixel_val != beat_pixel_last
+  ) {
+    beat_count++;
+    beat_pixel_last = beat_pixel_val;
+    dmx_effect_active = false;
+  }
   
   // DMX
   int[] dmx_data = new int[255];
@@ -260,6 +271,11 @@ void draw() {
       }
     }
   }
+  
+  // Render effects
+  dmx_data = dmx_effects(dmx_data);
+  
+  // Send to DMXPro
   if (dmx_enabled) {
     dmx.set(0, dmx_data);
   }
@@ -269,7 +285,7 @@ void draw() {
     "FYIAW Lighting v5 - " +
     int(frameRate) +
     " fps, beatcount " +
-    dmx_beat_count
+    beat_count
   );
   
 }
