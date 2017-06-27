@@ -184,9 +184,10 @@ void draw() {
     (beat_pixel_val == color(255) || beat_pixel_val == color(0)) && 
     beat_pixel_val != beat_pixel_last
   ) {
-    beat_count++;
     beat_pixel_last = beat_pixel_val;
-    dmx_effect_active = false;
+    if (beat_pixel_val == color(255)) {
+      beat_count++;
+    }
   }
   
   // DMX
@@ -198,7 +199,7 @@ void draw() {
     dmx_data = dmx_fixed_color();
   }
   else {
-    // Walk all DMX groups
+    // Capture pixels for fixtures
     for (int group_num=0; group_num<dmx_groups.size(); group_num++) {
       // Walk all DMX group fixtures
       group = dmx_groups.getJSONObject(group_num);
@@ -210,17 +211,47 @@ void draw() {
         
         // RGB fixture
         if (fixture_type.equals("rgb")) {
-          // Set DMX channel data
           int[] fixture_color = dmx_fixture_rgb(fixture, group);
           dmx_data[fixture.getJSONArray("channels").getInt(0)] = fixture_color[0];
           dmx_data[fixture.getJSONArray("channels").getInt(1)] = fixture_color[1];
           dmx_data[fixture.getJSONArray("channels").getInt(2)] = fixture_color[2];
-          
-          // Draw fixture
+        }
+        
+        // Monochrome fixture 
+        else if (fixture_type.equals("monochrome")) {
+          dmx_data[fixture.getInt("channel")] = dmx_fixture_monochrome(fixture, group);
+        }
+        
+        // Static fixture
+        else if (fixture_type.equals("fixed")) {
+          dmx_data[fixture.getInt("channel")] = fixture.getInt("value");
+        }
+        
+        // Unhandled fixture type
+        else {
+          println(" - Unhandled fixture type: '" + fixture_type + "', name: " + fixture.getString("name"));
+        }
+      }
+    }
+  
+    // Apply effects
+    dmx_data = dmx_effects(dmx_data);
+    
+    // Render to screen
+    for (int group_num=0; group_num<dmx_groups.size(); group_num++) {
+      // Walk all DMX group fixtures
+      group = dmx_groups.getJSONObject(group_num);
+      group_fixtures = group.getJSONArray("fixtures");
+      
+      for (int fixture_num=0; fixture_num<group_fixtures.size(); fixture_num++) {
+        fixture = group_fixtures.getJSONObject(fixture_num);
+        fixture_type = fixture.getString("type");
+        
+        if (fixture_type.equals("rgb")) {
           fill(
-            fixture_color[0],
-            fixture_color[1],
-            fixture_color[2]
+            dmx_data[fixture.getJSONArray("channels").getInt(0)],
+            dmx_data[fixture.getJSONArray("channels").getInt(1)],
+            dmx_data[fixture.getJSONArray("channels").getInt(2)]
           );
           rect(
             fixture_num * 24,
@@ -229,15 +260,9 @@ void draw() {
             16
           );
         }
-        
-        // Monochrome fixture 
         else if (fixture_type.equals("monochrome")) {
-          int fixture_channel = fixture.getInt("channel");
-          // Set DMX channel data
-          dmx_data[fixture_channel] = dmx_fixture_monochrome(fixture, group);
-          
-          // Draw fixture
-          fill(dmx_data[fixture_channel], dmx_data[fixture_channel], dmx_data[fixture_channel]);
+          int channel_value = dmx_data[fixture.getInt("channel")];
+          fill(channel_value, channel_value, channel_value);
           ellipse(
             fixture_num * 24 + 8,
             config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 18,
@@ -248,11 +273,7 @@ void draw() {
         
         // Static fixture
         else if (fixture_type.equals("fixed")) {
-          // Set DMX channel data
-          int channel_value = fixture.getInt("value");
-          dmx_data[fixture.getInt("channel")] = channel_value;
-          
-          // Draw fixture
+          int channel_value = dmx_data[fixture.getInt("channel")];
           fill(channel_value, channel_value, channel_value);
           triangle(
             fixture_num * 24,
@@ -263,21 +284,13 @@ void draw() {
             config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 26
           );
         }
-        
-        // Unhandled fixture type
-        else {
-          println(" - Unhandled fixture type: '" + fixture_type + "', name: " + fixture.getString("name"));
-        }
       }
     }
-  }
-  
-  // Render effects
-  dmx_data = dmx_effects(dmx_data);
-  
-  // Send to DMXPro
-  if (dmx_enabled) {
-    dmx.set(0, dmx_data);
+    
+    // Send to DMXPro
+    if (dmx_enabled) {
+      dmx.set(0, dmx_data);
+    }
   }
   
   // Set frame title

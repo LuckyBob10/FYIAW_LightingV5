@@ -36,7 +36,7 @@
 			{
 				"name": "Group #1",
 				"description": "Just a DMX group!",
-				"smoothing_frames": 120,
+				"smoothing_frames": 15,
 				"smoothing_bias_positive": .1,
 				"smoothing_bias_negative": .9,
 				"brightness": 1,
@@ -47,7 +47,7 @@
 						"type": "rgb",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
-						"hue_offset": 180,
+						"hue_offset": 0,
 						"invert": "False",
 						"channels": [5, 6, 7],
 						"capture_pixel": [5, 5]
@@ -70,14 +70,64 @@
 						"hue_offset": 0,
 						"invert": "False",
 						"channels": [50, 51, 52],
-						"capture_pixel": [125, 63]
-					},					
+						"capture_pixel": [400, 63]
+					},
+					{
+						"name": "Flood #4",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [53, 54, 55],
+						"capture_pixel": [240, 180]
+					},
+					{
+						"name": "Flood #5",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [56, 57, 58],
+						"capture_pixel": [250, 20]
+					},
+					{
+						"name": "Flood #6",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [59, 60, 61],
+						"capture_pixel": [200, 180]
+					},
+					{
+						"name": "Flood #7",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [62, 63, 64],
+						"capture_pixel": [50, 10]
+					},
+					{
+						"name": "Flood #8",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [65, 66, 67],
+						"capture_pixel": [350, 65]
+					},
 					{
 						"name": "Moving Head 1 - auto program mode",
 						"type": "fixed",
 						"channel": 25,
 						"value": 127
-						
+
 					}
 				]
 			},
@@ -111,7 +161,7 @@
 						"sample_from": "red"
 					},
 					{
-						"name": "Moving Head #2 X",
+						"name": "Moving Head #2 Y",
 						"type": "monochrome",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
@@ -125,7 +175,7 @@
 						"type": "fixed",
 						"channel": 35,
 						"value": 127
-						
+
 					}
 				]
 			}

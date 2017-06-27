@@ -6,7 +6,11 @@ int
   window_size_dmx_group_height  = 32,
   window_size_dmx_fixture_width = 16,
   dmx_group_max_fixtures        = 0,
+  dmx_fixture_count             = 0,
   dmx_universe_size             = 0,
+  dmx_effect_num                = -1,
+  dmx_effect_count              = 7,
+  dmx_effect_force              = -1,
   initial_position_counter      = 0,
   beat_count                    = 0,
   beat_pixel_val                = 0,
@@ -14,10 +18,10 @@ int
   beat_pixel_x                  = 0,
   beat_pixel_y                  = 0,
   beat_pixel_last_triggered     = 0,
-  beat_num_effects              = 1
+  cur_fixture                   = 0
 ;
 
-int[]
+float[]
   dmx_effect_counter = {0, 0, 0, 0},
   dmx_effect_timer   = {0, 0, 0, 0}
 ;
@@ -31,7 +35,7 @@ boolean
   dmx_enabled       = true,
   dmx_test          = false,
   dmx_fixed_color   = false,
-  dmx_effect_active = false
+  dmx_effect_init   = false
 ;
 
 String
