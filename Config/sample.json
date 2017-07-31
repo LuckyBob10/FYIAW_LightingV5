@@ -1,5 +1,7 @@
 {
   "general": {
+		"window_size_x": 480,
+		"window_size_y": 250,
 		"capture_size_x": 480,
 		"capture_size_y": 200,
 		"initial_x": 5,
@@ -34,13 +36,13 @@
 		},
 		"dmx_groups": [
 			{
-				"name": "Group #1",
-				"description": "Just a DMX group!",
+				"name": "FYIAW 2017 Flood Lights",
+				"description": "",
 				"smoothing_frames": 15,
 				"smoothing_bias_positive": .1,
 				"smoothing_bias_negative": .9,
 				"brightness": 1,
-				"beat_effects": "False",
+				"beat_effects": "True",
 				"fixtures": [
 					{
 						"name": "Flood #1",
@@ -49,18 +51,18 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [5, 6, 7],
-						"capture_pixel": [5, 5]
+						"channels": [1,2,3],
+						"capture_pixel": []
 					},
 					{
-						"name": "Moving Head #1 X",
-						"type": "monochrome",
+						"name": "Flood #2",
+						"type": "rgb",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
 						"invert": "False",
-						"channel": 70,
-						"capture_pixel": [125, 63],
-						"sample_from": "red"
+						"channels": [4,5,6],
+						"capture_pixel": []
 					},
 					{
 						"name": "Flood #3",
@@ -69,8 +71,8 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [50, 51, 52],
-						"capture_pixel": [400, 63]
+						"channels": [7,8,9],
+						"capture_pixel": []
 					},
 					{
 						"name": "Flood #4",
@@ -79,8 +81,8 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [53, 54, 55],
-						"capture_pixel": [240, 180]
+						"channels": [10,11,12],
+						"capture_pixel": []
 					},
 					{
 						"name": "Flood #5",
@@ -89,8 +91,8 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [56, 57, 58],
-						"capture_pixel": [250, 20]
+						"channels": [13,14,15],
+						"capture_pixel": []
 					},
 					{
 						"name": "Flood #6",
@@ -99,8 +101,8 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [59, 60, 61],
-						"capture_pixel": [200, 180]
+						"channels": [16,17,18],
+						"capture_pixel": []
 					},
 					{
 						"name": "Flood #7",
@@ -109,8 +111,8 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [62, 63, 64],
-						"capture_pixel": [50, 10]
+						"channels": [19,20,21],
+						"capture_pixel": []
 					},
 					{
 						"name": "Flood #8",
@@ -119,63 +121,68 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [65, 66, 67],
-						"capture_pixel": [350, 65]
+						"channels": [22,23,24],
+						"capture_pixel": []
 					},
 					{
-						"name": "Moving Head 1 - auto program mode",
-						"type": "fixed",
-						"channel": 25,
-						"value": 127
-
-					}
-				]
-			},
-			{
-				"name": "Group #2",
-				"description": "Just a DMX group!",
-				"smoothing_frames": 0,
-				"smoothing_bias_positive": 1,
-				"smoothing_bias_negative": 1,
-				"brightness": 1,
-				"beat_effects": "False",
-				"fixtures": [
-					{
-						"name": "Flood #2",
+						"name": "Flood #9",
 						"type": "rgb",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
-						"hue_offset": 180,
+						"hue_offset": 0,
 						"invert": "False",
-						"channels": [20, 21, 22],
-						"capture_pixel": [5, 5]
+						"channels": [25,26,27],
+						"capture_pixel": []
 					},
 					{
-						"name": "Moving Head #2 X",
-						"type": "monochrome",
+						"name": "Flood #10",
+						"type": "rgb",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
 						"invert": "False",
-						"channel": 11,
-						"capture_pixel": [125, 63],
-						"sample_from": "red"
+						"channels": [28,29,30],
+						"capture_pixel": []
 					},
 					{
-						"name": "Moving Head #2 Y",
-						"type": "monochrome",
+						"name": "Flood #11",
+						"type": "rgb",
 						"brightness": 1,
 						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
 						"invert": "False",
-						"channel": 11,
-						"capture_pixel": [250, 25],
-						"sample_from": "rgb"
+						"channels": [31,32,33],
+						"capture_pixel": []
 					},
 					{
-						"name": "Moving Head 2 - auto program mode",
-						"type": "fixed",
-						"channel": 35,
-						"value": 127
-
+						"name": "Flood #12",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [34,35,36],
+						"capture_pixel": []
+					},
+					{
+						"name": "Flood #13",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [37,38,39],
+						"capture_pixel": []
+					},
+					{
+						"name": "Flood #14",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [40,41,42],
+						"capture_pixel": []
 					}
 				]
 			}

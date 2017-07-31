@@ -3,7 +3,7 @@ import java.awt.*;
 import dmxP512.*;
 import processing.serial.*;
 
-String config_file = "../../config/sample.json";
+String config_file = "../../config/FYIAW_2017.json";
 
 GraphicsEnvironment ge   = GraphicsEnvironment.getLocalGraphicsEnvironment();
 GraphicsDevice[]    gs   = ge.getScreenDevices();
@@ -59,6 +59,18 @@ void setup() {
     }
       
     // Set window size
+    if (
+      config.getJSONObject("general").getInt("window_size_x") > 0 &&
+      config.getJSONObject("general").getInt("window_size_x") > window_size_x
+    ) {
+      window_size_x = config.getJSONObject("general").getInt("window_size_x");
+    }
+    if (
+      config.getJSONObject("general").getInt("window_size_y") > 0 &&
+      config.getJSONObject("general").getInt("window_size_y") > window_size_y
+    ) {
+      window_size_y = config.getJSONObject("general").getInt("window_size_y");
+    }
     println(" - Final window size: " + window_size_x + "x" + window_size_y);
     size(window_size_x, window_size_y);
     
@@ -133,9 +145,9 @@ void setup() {
       dmx_enabled = false;
     }
     else {
-      println(" - Configuring DMXPro output");
+      println(" - Configuring DMXPro output with universe size: " + dmx_universe_size);
       try {
-        dmx = new DmxP512(this, dmx_universe_size+1, false);
+        dmx = new DmxP512(this, 150, false);
         dmx.setupDmxPro(
           config.getJSONObject("dmx").getJSONObject("general").getString("com_port"),
           config.getJSONObject("dmx").getJSONObject("general").getInt("com_baudrate")

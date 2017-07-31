@@ -30,12 +30,12 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
     cap = color(cap_hue, saturation(cap), brightness(cap));
     colorMode(RGB, 255, 255, 255);
   }
-  int mod_fix = fixture.getInt("brightness");
-  int mod_grp = group.getInt("brightness");
+  float mod_fix = fixture.getFloat("brightness");
+  float mod_grp = group.getFloat("brightness");
   int[] ret = {
-    int(red(cap))   * mod_fix * mod_grp,
-    int(green(cap)) * mod_fix * mod_grp,
-    int(blue(cap))  * mod_fix * mod_grp
+    round(int(red(cap))   * mod_fix * mod_grp),
+    round(int(green(cap)) * mod_fix * mod_grp),
+    round(int(blue(cap))  * mod_fix * mod_grp)
   };
   if (fixture.getBoolean("invert")) {
     ret[0] = 255 - ret[0];
@@ -73,11 +73,11 @@ int dmx_fixture_monochrome(JSONObject fixture, JSONObject group) {
   );
   int ret = 0;
   if (fixture.getString("sample_from").equals("rgb")) {
-    ret = (
+    ret = round((
       int(red(cap)) +
       int(green(cap)) +
       int(blue(cap))
-    ) / 3 * fixture.getInt("brightness") * group.getInt("brightness");
+    ) / 3 * fixture.getFloat("brightness") * group.getFloat("brightness"));
   }
   else if (fixture.getString("sample_from").equals("red")) {
     ret = int(red(cap));
@@ -193,6 +193,11 @@ int[] dmx_effects(int[] data) {
         }
         
       }
+    }
+    
+    // Apply gamma map
+    for (int i=0; i<255; i++) {
+      data[i] = iGammaMap[constrain(data[i], 0, 255)];
     }
     
     // Render effects
@@ -323,7 +328,7 @@ int[] dmx_effects(int[] data) {
         
         if (dmx_effect_init) {
           dmx_effect_init = false;
-          dmx_effect_counter[2] = 150; //ms
+          dmx_effect_counter[2] = 100; //ms
           dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[2]);
           dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
         }
