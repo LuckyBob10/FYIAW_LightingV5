@@ -30,12 +30,14 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
     cap = color(cap_hue, saturation(cap), brightness(cap));
     colorMode(RGB, 255, 255, 255);
   }
-  float mod_fix = fixture.getFloat("brightness");
-  float mod_grp = group.getFloat("brightness");
+  float mod_fix  = fixture.getFloat("brightness");
+  float mod_grp  = group.getFloat("brightness");
+  int clamp_low  = fixture.getJSONArray("brightness_clamp").getInt(0);
+  int clamp_high = fixture.getJSONArray("brightness_clamp").getInt(1);
   int[] ret = {
-    round(int(red(cap))   * mod_fix * mod_grp),
-    round(int(green(cap)) * mod_fix * mod_grp),
-    round(int(blue(cap))  * mod_fix * mod_grp)
+    constrain(round(int(red(cap))   * mod_fix * mod_grp), clamp_low, clamp_high),
+    constrain(round(int(green(cap)) * mod_fix * mod_grp), clamp_low, clamp_high),
+    constrain(round(int(blue(cap))  * mod_fix * mod_grp), clamp_low, clamp_high)
   };
   if (fixture.getBoolean("invert")) {
     ret[0] = 255 - ret[0];
@@ -67,17 +69,19 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
 }
 
 int dmx_fixture_monochrome(JSONObject fixture, JSONObject group) {
+  int clamp_low  = fixture.getJSONArray("brightness_clamp").getInt(0);
+  int clamp_high = fixture.getJSONArray("brightness_clamp").getInt(1);
   color cap = dmx_capture_pixel(
     fixture.getJSONArray("capture_pixel").getInt(0),
     fixture.getJSONArray("capture_pixel").getInt(1)
   );
   int ret = 0;
   if (fixture.getString("sample_from").equals("rgb")) {
-    ret = round((
+    ret = constrain(round((
       int(red(cap)) +
       int(green(cap)) +
       int(blue(cap))
-    ) / 3 * fixture.getFloat("brightness") * group.getFloat("brightness"));
+    ) / 3 * fixture.getFloat("brightness") * group.getFloat("brightness")), clamp_low, clamp_high);
   }
   else if (fixture.getString("sample_from").equals("red")) {
     ret = int(red(cap));

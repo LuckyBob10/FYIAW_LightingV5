@@ -3,7 +3,7 @@ import java.awt.*;
 import dmxP512.*;
 import processing.serial.*;
 
-String config_file = "../../config/FYIAW_2017.json";
+String config_file = "../../config/Firehouse_2017.json";
 
 GraphicsEnvironment ge   = GraphicsEnvironment.getLocalGraphicsEnvironment();
 GraphicsDevice[]    gs   = ge.getScreenDevices();

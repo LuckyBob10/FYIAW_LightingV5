@@ -10,7 +10,7 @@ int
   dmx_universe_size             = 0,
   dmx_effect_num                = -1,
   dmx_effect_count              = 7,
-  dmx_effect_force              = -1,
+  dmx_effect_force              = 3,
   initial_position_counter      = 0,
   beat_count                    = 0,
   beat_pixel_val                = 0,
