@@ -27,7 +27,8 @@
 		"general": {
 			"enabled": "True",
 			"com_port": "COM8",
-			"com_baudrate": 115000
+			"com_baudrate": 115000,
+			"brightness": 1
 		},
 		"beat_detection": {
 			"enabled": "True",

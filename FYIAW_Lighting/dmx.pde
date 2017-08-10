@@ -5,16 +5,6 @@ int[] dmx_test() {
   return dmx_data;
 }
 
-int[] dmx_fixed_color() {
-  int[] dmx_data = new int[255];
-  // Fill all RGB fixtures with a solid color
-  
-  
-  // Fill all monochrome fixtures with RGB average brightness
-  
-  return dmx_data;
-}
-
 color dmx_capture_pixel(int x, int y) {
   return color(get(x, y));
 }
@@ -35,36 +25,144 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
   int clamp_low  = fixture.getJSONArray("brightness_clamp").getInt(0);
   int clamp_high = fixture.getJSONArray("brightness_clamp").getInt(1);
   int[] ret = {
-    constrain(round(int(red(cap))   * mod_fix * mod_grp), clamp_low, clamp_high),
-    constrain(round(int(green(cap)) * mod_fix * mod_grp), clamp_low, clamp_high),
-    constrain(round(int(blue(cap))  * mod_fix * mod_grp), clamp_low, clamp_high)
+    constrain(round(int(red(cap))   * dmx_brightness * mod_fix * mod_grp), clamp_low, clamp_high),
+    constrain(round(int(green(cap)) * dmx_brightness * mod_fix * mod_grp), clamp_low, clamp_high),
+    constrain(round(int(blue(cap))  * dmx_brightness * mod_fix * mod_grp), clamp_low, clamp_high)
   };
   if (fixture.getBoolean("invert")) {
     ret[0] = 255 - ret[0];
     ret[1] = 255 - ret[1];
     ret[2] = 255 - ret[2];
   }
-  ret[0] = dmx_smoothing(
-    fixture.getJSONArray("channels").getInt(0),
-    ret[0],
-    group.getInt("smoothing_frames"),
-    group.getFloat("smoothing_bias_positive"),
-    group.getFloat("smoothing_bias_negative")    
-  );
-  ret[1] = dmx_smoothing(
-    fixture.getJSONArray("channels").getInt(1),
-    ret[1],
-    group.getInt("smoothing_frames"),
-    group.getFloat("smoothing_bias_positive"),
-    group.getFloat("smoothing_bias_negative")    
-  );
-  ret[2] = dmx_smoothing(
-    fixture.getJSONArray("channels").getInt(2),
-    ret[2],
-    group.getInt("smoothing_frames"),
-    group.getFloat("smoothing_bias_positive"),
-    group.getFloat("smoothing_bias_negative")    
-  );
+  switch (dmx_fixed_color_mode) { 
+    case 0:
+      // Fixed color not enabled - apply smoothing to captured values
+      for (int i=0; i<3; i++) {
+        ret[i] = dmx_smoothing(
+          fixture.getJSONArray("channels").getInt(i),
+          ret[i],
+          group.getInt("smoothing_frames"),
+          group.getFloat("smoothing_bias_positive"),
+          group.getFloat("smoothing_bias_negative")    
+        );
+      }
+      break;
+
+    case 1:
+      // Fixed color - current custom color
+      ret[0] = dmx_fixed_custom_color[0];
+      ret[1] = dmx_fixed_custom_color[1];
+      ret[2] = dmx_fixed_custom_color[2];
+      // Apply smoothing if enabled
+      if (dmx_fixed_color_smoothing) {
+        for (int i=0; i<3; i++) {
+          ret[i] = dmx_smoothing(
+            fixture.getJSONArray("channels").getInt(i),
+            ret[i],
+            group.getInt("smoothing_frames"),
+            group.getFloat("smoothing_bias_positive"),
+            group.getFloat("smoothing_bias_negative")    
+          );
+        }
+      }
+      break;
+
+    case 2:
+      // Fixed color - red
+      ret[0] = 255;
+      ret[1] = 0;
+      ret[2] = 0;
+      // Apply smoothing if enabled
+      if (dmx_fixed_color_smoothing) {
+        for (int i=0; i<3; i++) {
+          ret[i] = dmx_smoothing(
+            fixture.getJSONArray("channels").getInt(i),
+            ret[i],
+            group.getInt("smoothing_frames"),
+            group.getFloat("smoothing_bias_positive"),
+            group.getFloat("smoothing_bias_negative")    
+          );
+        }
+      }
+      break;
+
+    case 3:
+      // Fixed color - green
+      ret[0] = 0;
+      ret[1] = 255;
+      ret[2] = 0;
+      // Apply smoothing if enabled
+      if (dmx_fixed_color_smoothing) {
+        for (int i=0; i<3; i++) {
+          ret[i] = dmx_smoothing(
+            fixture.getJSONArray("channels").getInt(i),
+            ret[i],
+            group.getInt("smoothing_frames"),
+            group.getFloat("smoothing_bias_positive"),
+            group.getFloat("smoothing_bias_negative")    
+          );
+        }
+      }
+      break;
+      
+    case 4:
+      // Fixed color - blue
+      ret[0] = 0;
+      ret[1] = 0;
+      ret[2] = 255;
+      // Apply smoothing if enabled
+      if (dmx_fixed_color_smoothing) {
+        for (int i=0; i<3; i++) {
+          ret[i] = dmx_smoothing(
+            fixture.getJSONArray("channels").getInt(i),
+            ret[i],
+            group.getInt("smoothing_frames"),
+            group.getFloat("smoothing_bias_positive"),
+            group.getFloat("smoothing_bias_negative")    
+          );
+        }
+      }
+      break;
+      
+    case 5:
+      // Fixed color - white
+      ret[0] = 255;
+      ret[1] = 255;
+      ret[2] = 255;
+      // Apply smoothing if enabled
+      if (dmx_fixed_color_smoothing) {
+        for (int i=0; i<3; i++) {
+          ret[i] = dmx_smoothing(
+            fixture.getJSONArray("channels").getInt(i),
+            ret[i],
+            group.getInt("smoothing_frames"),
+            group.getFloat("smoothing_bias_positive"),
+            group.getFloat("smoothing_bias_negative")    
+          );
+        }
+      }
+      break;
+      
+    case 6:
+      // Fixed color - black
+      ret[0] = 0;
+      ret[1] = 0;
+      ret[2] = 0;
+      // Apply smoothing if enabled
+      if (dmx_fixed_color_smoothing) {
+        for (int i=0; i<3; i++) {
+          ret[i] = dmx_smoothing(
+            fixture.getJSONArray("channels").getInt(i),
+            ret[i],
+            group.getInt("smoothing_frames"),
+            group.getFloat("smoothing_bias_positive"),
+            group.getFloat("smoothing_bias_negative")    
+          );
+        }
+      }
+      break;
+
+  }
   return ret;
 }
 
@@ -81,7 +179,7 @@ int dmx_fixture_monochrome(JSONObject fixture, JSONObject group) {
       int(red(cap)) +
       int(green(cap)) +
       int(blue(cap))
-    ) / 3 * fixture.getFloat("brightness") * group.getFloat("brightness")), clamp_low, clamp_high);
+    ) / 3 * dmx_brightness * fixture.getFloat("brightness") * group.getFloat("brightness")), clamp_low, clamp_high);
   }
   else if (fixture.getString("sample_from").equals("red")) {
     ret = int(red(cap));
@@ -463,9 +561,7 @@ int[] dmx_effects(int[] data) {
         }
         break;
         
-    }
+    } 
   }
-  
-  
   return data;
 }

@@ -10,7 +10,8 @@ int
   dmx_universe_size             = 0,
   dmx_effect_num                = -1,
   dmx_effect_count              = 7,
-  dmx_effect_force              = 3,
+  dmx_effect_force              = -1,
+  dmx_fixed_color_mode          = 0,
   initial_position_counter      = 0,
   beat_count                    = 0,
   beat_pixel_val                = 0,
@@ -19,6 +20,17 @@ int
   beat_pixel_y                  = 0,
   beat_pixel_last_triggered     = 0,
   cur_fixture                   = 0
+;
+
+float
+  dmx_brightness      = 1,
+  dmx_brightness_step = .005,
+  dmx_brightness_last = 1
+;
+
+int[]
+  dmx_fixed_cur_color    = {0, 0, 0},
+  dmx_fixed_custom_color = {192, 192, 192}
 ;
 
 float[]
@@ -31,11 +43,12 @@ int[][]
 ;
 
 boolean
-  led_board_enabled = true,
-  dmx_enabled       = true,
-  dmx_test          = false,
-  dmx_fixed_color   = false,
-  dmx_effect_init   = false
+  led_board_enabled         = true,
+  dmx_enabled               = true,
+  dmx_test                  = false,
+  dmx_fixed_color           = false,
+  dmx_effect_init           = false,
+  dmx_fixed_color_smoothing = true
 ;
 
 String

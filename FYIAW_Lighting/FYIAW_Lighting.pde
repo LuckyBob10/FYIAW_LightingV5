@@ -207,9 +207,6 @@ void draw() {
   if (dmx_test) {
     dmx_data = dmx_test();
   }
-  else if (dmx_fixed_color) {
-    dmx_data = dmx_fixed_color();
-  }
   else {
     // Capture pixels for fixtures
     for (int group_num=0; group_num<dmx_groups.size(); group_num++) {
@@ -247,7 +244,9 @@ void draw() {
     }
   
     // Apply effects
-    dmx_data = dmx_effects(dmx_data);
+    if (dmx_fixed_color_mode == 0) {
+      dmx_data = dmx_effects(dmx_data);
+    }
     
     // Render to screen
     for (int group_num=0; group_num<dmx_groups.size(); group_num++) {
@@ -328,4 +327,104 @@ PImage getScreen() {
   catch(AWTException e) {
   }
   return (new PImage(desktop));
+}
+
+// Handle 
+void keyPressed() {
+  switch(keyCode) {
+    case 33:
+      // PgUp - increase brightness
+      dmx_brightness += dmx_brightness_step;
+      if (dmx_brightness > 1) {
+        dmx_brightness = 1;
+      }
+      println("Key - brightness up: " + dmx_brightness);
+      break;
+
+    case 34:
+      // PgDn - decrease brightness
+      dmx_brightness -= dmx_brightness_step;
+      if (dmx_brightness < 0) {
+        dmx_brightness = 0;
+      }
+      println("Key - brightness down: " + dmx_brightness);
+      break;
+    
+    case 123:
+      // F12 - Toggle solid color smoothing
+      if (dmx_fixed_color_smoothing) {
+        println("Key - DMX solid color smoothing off");
+        dmx_fixed_color_smoothing = false;
+      }
+      else {
+        println("Key - DMX solid color smoothing on");
+        dmx_fixed_color_smoothing = true;
+      }
+      break;
+      
+    case 116:
+      // F5 - Red
+      if (dmx_fixed_color_mode != 2) {
+        println("Key - DMX red on");
+        dmx_fixed_color_mode = 2;
+      }
+      else {
+        println("Key - DMX red off");
+        dmx_fixed_color_mode = 0;
+      }
+      break;
+
+    case 117:
+      // F6 - Green
+      if (dmx_fixed_color_mode != 3) {
+        println("Key - DMX green on");
+        dmx_fixed_color_mode = 3;
+      }
+      else {
+        println("Key - DMX green off");
+        dmx_fixed_color_mode = 0;
+      }
+      break;
+
+    case 118:
+      // F7 - Blue
+      if (dmx_fixed_color_mode != 4) {
+        println("Key - DMX blue on");
+        dmx_fixed_color_mode = 4;
+      }
+      else {
+        println("Key - DMX blue off");
+        dmx_fixed_color_mode = 0;
+      }
+      break;
+      
+    case 119:
+      // F8 - White
+      if (dmx_fixed_color_mode != 5) {
+        println("Key - DMX white on");
+        dmx_fixed_color_mode = 5;
+      }
+      else {
+        println("Key - DMX white off");
+        dmx_fixed_color_mode = 0;
+      }
+      break;
+      
+    case 120:
+      // F9 - Black
+      if (dmx_fixed_color_mode != 6) {
+        println("Key - DMX black on");
+        dmx_fixed_color_mode = 6;
+      }
+      else {
+        println("Key - DMX black off");
+        dmx_fixed_color_mode = 0;
+      }
+      break;
+
+    default:
+      println("Unhandled key: " + keyCode);
+      println(dmx_fixed_cur_color[0]);
+      break;
+  }
 }
