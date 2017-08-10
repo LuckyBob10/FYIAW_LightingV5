@@ -349,18 +349,21 @@ void keyPressed() {
       }
       println("Key - brightness down: " + dmx_brightness);
       break;
-    
-    case 123:
-      // F12 - Toggle solid color smoothing
-      if (dmx_fixed_color_smoothing) {
-        println("Key - DMX solid color smoothing off");
-        dmx_fixed_color_smoothing = false;
-      }
-      else {
-        println("Key - DMX solid color smoothing on");
-        dmx_fixed_color_smoothing = true;
-      }
+      
+    case 112:
+      // F1 - Winamp previous effect
+      println("Key - Winamp previous effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
+      
+    case 113:
+      // F2 - Winamp next effect
+      println("Key - Winamp next effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
+      break;
+      
+    case 114:
+    // F1 - Winamp pause
+      println("Key - Winamp pause music - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
+      break;    
       
     case 116:
       // F5 - Red
@@ -419,6 +422,18 @@ void keyPressed() {
       else {
         println("Key - DMX black off");
         dmx_fixed_color_mode = 0;
+      }
+      break;
+      
+    case 123:
+      // F12 - Toggle solid color smoothing
+      if (dmx_fixed_color_smoothing) {
+        println("Key - DMX solid color smoothing off");
+        dmx_fixed_color_smoothing = false;
+      }
+      else {
+        println("Key - DMX solid color smoothing on");
+        dmx_fixed_color_smoothing = true;
       }
       break;
 
