@@ -350,19 +350,30 @@ void keyPressed() {
       println("Key - brightness down: " + dmx_brightness);
       break;
       
-    case 112:
-      // F1 - Winamp previous effect
+    case 36:
+      // HOME - Winamp previous effect
       println("Key - Winamp previous effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
       
-    case 113:
-      // F2 - Winamp next effect
+    case 35:
+      // END - Winamp next effect
       println("Key - Winamp next effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
       
-    case 114:
-    // F1 - Winamp pause
-      println("Key - Winamp pause music - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
+    case 112:
+      // F1 - Big Red
+      println("Key - Big Red");
+      break;
+      
+    case 113:
+      // F2 - Effect pause
+      if (dmx_effect_enabled) {
+        println("Key - Effects disabled");
+      }
+      else {
+        println("Key - Effects enabled");
+      }
+      dmx_effect_enabled = !dmx_effect_enabled;
       break;    
       
     case 116:
@@ -425,15 +436,27 @@ void keyPressed() {
       }
       break;
       
-    case 123:
-      // F12 - Toggle solid color smoothing
-      if (dmx_fixed_color_smoothing) {
-        println("Key - DMX solid color smoothing off");
-        dmx_fixed_color_smoothing = false;
+    case 121:
+      // F10 - Rainbow
+      if (dmx_fixed_color_mode != 6) {
+        println("Key - DMX rainbow on");
+        dmx_fixed_color_mode = 6;
       }
       else {
-        println("Key - DMX solid color smoothing on");
-        dmx_fixed_color_smoothing = true;
+        println("Key - DMX rainbow off");
+        dmx_fixed_color_mode = 0;
+      }
+      break;
+      
+    case 123:
+      // F12 - Effects hard vs soft
+      if (dmx_effect_hard) {
+        println("Key - DMX effects hard");
+        dmx_effect_hard = false;
+      }
+      else {
+        println("Key - DMX effects soft");
+        dmx_effect_hard = true;
       }
       break;
 

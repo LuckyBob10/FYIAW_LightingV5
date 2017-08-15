@@ -48,7 +48,8 @@ boolean
   dmx_test                  = false,
   dmx_fixed_color           = false,
   dmx_effect_init           = false,
-  dmx_fixed_color_smoothing = true
+  dmx_effect_hard = true,
+  dmx_effect_enabled        = true
 ;
 
 String

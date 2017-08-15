@@ -54,7 +54,7 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       ret[1] = dmx_fixed_custom_color[1];
       ret[2] = dmx_fixed_custom_color[2];
       // Apply smoothing if enabled
-      if (dmx_fixed_color_smoothing) {
+      if (dmx_effect_hard) {
         for (int i=0; i<3; i++) {
           ret[i] = dmx_smoothing(
             fixture.getJSONArray("channels").getInt(i),
@@ -73,7 +73,7 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       ret[1] = 0;
       ret[2] = 0;
       // Apply smoothing if enabled
-      if (dmx_fixed_color_smoothing) {
+      if (dmx_effect_hard) {
         for (int i=0; i<3; i++) {
           ret[i] = dmx_smoothing(
             fixture.getJSONArray("channels").getInt(i),
@@ -92,7 +92,7 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       ret[1] = 255;
       ret[2] = 0;
       // Apply smoothing if enabled
-      if (dmx_fixed_color_smoothing) {
+      if (dmx_effect_hard) {
         for (int i=0; i<3; i++) {
           ret[i] = dmx_smoothing(
             fixture.getJSONArray("channels").getInt(i),
@@ -111,7 +111,7 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       ret[1] = 0;
       ret[2] = 255;
       // Apply smoothing if enabled
-      if (dmx_fixed_color_smoothing) {
+      if (dmx_effect_hard) {
         for (int i=0; i<3; i++) {
           ret[i] = dmx_smoothing(
             fixture.getJSONArray("channels").getInt(i),
@@ -130,7 +130,7 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       ret[1] = 255;
       ret[2] = 255;
       // Apply smoothing if enabled
-      if (dmx_fixed_color_smoothing) {
+      if (dmx_effect_hard) {
         for (int i=0; i<3; i++) {
           ret[i] = dmx_smoothing(
             fixture.getJSONArray("channels").getInt(i),
@@ -149,7 +149,7 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       ret[1] = 0;
       ret[2] = 0;
       // Apply smoothing if enabled
-      if (dmx_fixed_color_smoothing) {
+      if (dmx_effect_hard) {
         for (int i=0; i<3; i++) {
           ret[i] = dmx_smoothing(
             fixture.getJSONArray("channels").getInt(i),
@@ -303,265 +303,267 @@ int[] dmx_effects(int[] data) {
     }
     
     // Render effects
-    switch(dmx_effect_num) {        
-      case 0:
-        // Invert all channels
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[0] = beat_count + 2;
-        }
-        for (int i=0; i<255; i++) {
-          data[i] = 255 - data[i];
-        }
-        break;
-        
-      case 1:
-        // On-beat invert
-        // counter[1] = current beat
-        // counter[2] = invert bit
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[0] = beat_count + 8;
-        }
-        if (dmx_effect_counter[1] < beat_count) {
-          dmx_effect_counter[1] = beat_count;
-          if (dmx_effect_counter[2] == 0) {
-            dmx_effect_counter[2] = 1;
+      if (dmx_effect_enabled) {
+      switch(dmx_effect_num) {        
+        case 0:
+          // Invert all channels
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[0] = beat_count + 2;
           }
-          else {
-            dmx_effect_counter[2] = 0;
-          }
-        }
-        if (dmx_effect_counter[2] == 0) {
           for (int i=0; i<255; i++) {
             data[i] = 255 - data[i];
           }
-        }
-        break;
-
-      case 2:
-        // On-beat dim
-        // counter[1] = current beat
-        // counter[2] = invert bit
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[0] = beat_count + 8;
-        }
-        if (dmx_effect_counter[1] < beat_count) {
-          dmx_effect_counter[1] = beat_count;
+          break;
+          
+        case 1:
+          // On-beat invert
+          // counter[1] = current beat
+          // counter[2] = invert bit
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[0] = beat_count + 8;
+          }
+          if (dmx_effect_counter[1] < beat_count) {
+            dmx_effect_counter[1] = beat_count;
+            if (dmx_effect_counter[2] == 0) {
+              dmx_effect_counter[2] = 1;
+            }
+            else {
+              dmx_effect_counter[2] = 0;
+            }
+          }
           if (dmx_effect_counter[2] == 0) {
-            dmx_effect_counter[2] = 1;
+            for (int i=0; i<255; i++) {
+              data[i] = 255 - data[i];
+            }
           }
-          else {
+          break;
+  
+        case 2:
+          // On-beat dim
+          // counter[1] = current beat
+          // counter[2] = invert bit
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[0] = beat_count + 8;
+          }
+          if (dmx_effect_counter[1] < beat_count) {
+            dmx_effect_counter[1] = beat_count;
+            if (dmx_effect_counter[2] == 0) {
+              dmx_effect_counter[2] = 1;
+            }
+            else {
+              dmx_effect_counter[2] = 0;
+            }
+          }
+          if (dmx_effect_counter[2] == 0) {
+            for (int i=0; i<255; i++) {
+              data[i] = round(data[i] * 0.5);
+            }
+          }
+          break;
+          
+        case 3:
+          // On-beat fade
+          // counter[1] = current beat
+          // counter[2] = dim ammount
+          float per_frame_dim = 0.02;
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[0] = beat_count + 8;
+          }
+          if (dmx_effect_counter[1] < beat_count) {
+            dmx_effect_counter[1] = beat_count + 1;
             dmx_effect_counter[2] = 0;
           }
-        }
-        if (dmx_effect_counter[2] == 0) {
+          dmx_effect_counter[2] += per_frame_dim;
           for (int i=0; i<255; i++) {
-            data[i] = round(data[i] * 0.5);
+            data[i] = round(data[i] * (1 - dmx_effect_counter[2]));
           }
-        }
-        break;
-        
-      case 3:
-        // On-beat fade
-        // counter[1] = current beat
-        // counter[2] = dim ammount
-        float per_frame_dim = 0.02;
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[0] = beat_count + 8;
-        }
-        if (dmx_effect_counter[1] < beat_count) {
-          dmx_effect_counter[1] = beat_count + 1;
-          dmx_effect_counter[2] = 0;
-        }
-        dmx_effect_counter[2] += per_frame_dim;
-        for (int i=0; i<255; i++) {
-          data[i] = round(data[i] * (1 - dmx_effect_counter[2]));
-        }
-        break;
-        
-      case 4:
-        // On-beat blank 50% fixtures
-        // counter[1] = current beat
-        // counter[2] = fixture number
-        // counter[3] = bit toggle
-        cur_fixture = 0;
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[0] = beat_count + 8;
-        }
-        
-        // Detect beat
-        if (dmx_effect_counter[1] < beat_count) {
-          dmx_effect_counter[1] = beat_count;
-          dmx_effect_counter[2]++;
-        }
-        
-        // Walk fixtures
-        for (int g=0; g<dmx_groups.size(); g++) {
-          cur_fixture = int(dmx_effect_counter[2]);
-          group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
-          for (int f=0; f<group_fixtures.size(); f++) {
-            fixture = group_fixtures.getJSONObject(f);
-
-            if (cur_fixture % 2 == 0) {
-              if (fixture.getString("type").equals("rgb")) {
-                data[fixture.getJSONArray("channels").getInt(0)] = 0;
-                data[fixture.getJSONArray("channels").getInt(1)] = 0;
-                data[fixture.getJSONArray("channels").getInt(2)] = 0;
-              }
-              else if (fixture.getString("type").equals("monochrome")) {
-                data[fixture.getInt("channel")] = 0;
-              }
-            }
-
-            cur_fixture++;
+          break;
+          
+        case 4:
+          // On-beat blank 50% fixtures
+          // counter[1] = current beat
+          // counter[2] = fixture number
+          // counter[3] = bit toggle
+          cur_fixture = 0;
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[0] = beat_count + 8;
           }
-        }
-        break;
-        
-      case 5:
-        // Fixture sweep, increasing
-        // timer[1] = timeout
-        // counter[1] = fixture start counter
-        // counter[2] = speed
-        
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[2] = 100; //ms
-          dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[2]);
-          dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
-        }
-        
-        // Increment fixture counter every N s
-        if (millis() > dmx_effect_timer[1]) {
-          dmx_effect_counter[1]++;
-          dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
-        }
-        
-        // Walk fixtures
-        for (int g=0; g<dmx_groups.size(); g++) {
-          cur_fixture = int(dmx_effect_counter[2]);
-          group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
-          for (int f=0; f<group_fixtures.size(); f++) {
-            fixture = group_fixtures.getJSONObject(f);
-
-            if (f < dmx_effect_counter[1]) {
-              if (fixture.getString("type").equals("rgb")) {
-                data[fixture.getJSONArray("channels").getInt(0)] = 0;
-                data[fixture.getJSONArray("channels").getInt(1)] = 0;
-                data[fixture.getJSONArray("channels").getInt(2)] = 0;
+          
+          // Detect beat
+          if (dmx_effect_counter[1] < beat_count) {
+            dmx_effect_counter[1] = beat_count;
+            dmx_effect_counter[2]++;
+          }
+          
+          // Walk fixtures
+          for (int g=0; g<dmx_groups.size(); g++) {
+            cur_fixture = int(dmx_effect_counter[2]);
+            group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
+            for (int f=0; f<group_fixtures.size(); f++) {
+              fixture = group_fixtures.getJSONObject(f);
+  
+              if (cur_fixture % 2 == 0) {
+                if (fixture.getString("type").equals("rgb")) {
+                  data[fixture.getJSONArray("channels").getInt(0)] = 0;
+                  data[fixture.getJSONArray("channels").getInt(1)] = 0;
+                  data[fixture.getJSONArray("channels").getInt(2)] = 0;
+                }
+                else if (fixture.getString("type").equals("monochrome")) {
+                  data[fixture.getInt("channel")] = 0;
+                }
               }
-              else if (fixture.getString("type").equals("monochrome")) {
-                data[fixture.getInt("channel")] = 0;
-              }
+  
+              cur_fixture++;
             }
           }
-        }
-        break;
-        
-      case 6:
-        // Fixture sweep, inverting
-        // timer[1] = timeout
-        // counter[1] = fixture start counter
-        // counter[2] = speed
-        
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[2] = 500; //ms
-          dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[2]);
-          dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
-        }
-        
-        // Increment fixture counter every N s
-        if (millis() > dmx_effect_timer[1]) {
-          dmx_effect_counter[1]++;
-          dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
-        }
-        
-        // Walk fixtures
-        for (int g=0; g<dmx_groups.size(); g++) {
-          cur_fixture = int(dmx_effect_counter[2]);
-          group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
-          for (int f=0; f<group_fixtures.size(); f++) {
-            fixture = group_fixtures.getJSONObject(group_fixtures.size() - f - 1);
-
-            if (f < dmx_effect_counter[1]) {
-              if (fixture.getString("type").equals("rgb")) {
-                data[fixture.getJSONArray("channels").getInt(0)] = 255 - data[fixture.getJSONArray("channels").getInt(0)];
-                data[fixture.getJSONArray("channels").getInt(1)] = 255 - data[fixture.getJSONArray("channels").getInt(1)];
-                data[fixture.getJSONArray("channels").getInt(2)] = 255 - data[fixture.getJSONArray("channels").getInt(2)];
-              }
-              else if (fixture.getString("type").equals("monochrome")) {
-                data[fixture.getInt("channel")] = 255 - data[fixture.getInt("channel")];
-              }
-            }
+          break;
+          
+        case 5:
+          // Fixture sweep, increasing
+          // timer[1] = timeout
+          // counter[1] = fixture start counter
+          // counter[2] = speed
+          
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[2] = 100; //ms
+            dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[2]);
+            dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
           }
-        }
-        break;
-        
-      case 7:
-        // Fixture sweep, cylon
-        // timer[1] = timeout
-        // counter[1] = fixture start counter
-        // counter[2] = direction
-        // counter[3] = speed
-        
-        
-        if (dmx_effect_init) {
-          dmx_effect_init = false;
-          dmx_effect_counter[2] = 1;
-          dmx_effect_counter[3] = 75; //ms
-          dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[3] * 4);
-          dmx_effect_timer[1] = millis() + dmx_effect_counter[3];
-        }
-        
-        // Increment fixture counter every N s
-        if (millis() > dmx_effect_timer[1]) {
-          if (dmx_effect_counter[2] > 0) {
+          
+          // Increment fixture counter every N s
+          if (millis() > dmx_effect_timer[1]) {
             dmx_effect_counter[1]++;
-          }
-          else {
-            dmx_effect_counter[1]--;
+            dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
           }
           
-          if (dmx_effect_counter[1] <= 1) {
-            dmx_effect_counter[2] = 1;
-          }
-          else if (dmx_effect_counter[1] >= dmx_group_max_fixtures - 1) {
-            dmx_effect_counter[2] = 0;
-          }
-          
-          dmx_effect_timer[1] = millis() + dmx_effect_counter[3];
-        }
-        
-        // Walk fixtures
-        for (int g=0; g<dmx_groups.size(); g++) {
-          cur_fixture = int(dmx_effect_counter[2]);
-          group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
-          for (int f=0; f<group_fixtures.size(); f++) {
-            fixture = group_fixtures.getJSONObject(group_fixtures.size() - f - 1);
-
-            if (
-              f < dmx_effect_counter[1] - 1 ||
-              f > dmx_effect_counter[1] + 1
-            ) {
-              if (fixture.getString("type").equals("rgb")) {
-                data[fixture.getJSONArray("channels").getInt(0)] = 0;
-                data[fixture.getJSONArray("channels").getInt(1)] = 0;
-                data[fixture.getJSONArray("channels").getInt(2)] = 0;
-              }
-              else if (fixture.getString("type").equals("monochrome")) {
-                data[fixture.getInt("channel")] = 255 - data[fixture.getInt("channel")];
+          // Walk fixtures
+          for (int g=0; g<dmx_groups.size(); g++) {
+            cur_fixture = int(dmx_effect_counter[2]);
+            group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
+            for (int f=0; f<group_fixtures.size(); f++) {
+              fixture = group_fixtures.getJSONObject(f);
+  
+              if (f < dmx_effect_counter[1]) {
+                if (fixture.getString("type").equals("rgb")) {
+                  data[fixture.getJSONArray("channels").getInt(0)] = 0;
+                  data[fixture.getJSONArray("channels").getInt(1)] = 0;
+                  data[fixture.getJSONArray("channels").getInt(2)] = 0;
+                }
+                else if (fixture.getString("type").equals("monochrome")) {
+                  data[fixture.getInt("channel")] = 0;
+                }
               }
             }
           }
-        }
-        break;
-        
-    } 
+          break;
+          
+        case 6:
+          // Fixture sweep, inverting
+          // timer[1] = timeout
+          // counter[1] = fixture start counter
+          // counter[2] = speed
+          
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[2] = 500; //ms
+            dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[2]);
+            dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
+          }
+          
+          // Increment fixture counter every N s
+          if (millis() > dmx_effect_timer[1]) {
+            dmx_effect_counter[1]++;
+            dmx_effect_timer[1] = millis() + dmx_effect_counter[2];
+          }
+          
+          // Walk fixtures
+          for (int g=0; g<dmx_groups.size(); g++) {
+            cur_fixture = int(dmx_effect_counter[2]);
+            group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
+            for (int f=0; f<group_fixtures.size(); f++) {
+              fixture = group_fixtures.getJSONObject(group_fixtures.size() - f - 1);
+  
+              if (f < dmx_effect_counter[1]) {
+                if (fixture.getString("type").equals("rgb")) {
+                  data[fixture.getJSONArray("channels").getInt(0)] = 255 - data[fixture.getJSONArray("channels").getInt(0)];
+                  data[fixture.getJSONArray("channels").getInt(1)] = 255 - data[fixture.getJSONArray("channels").getInt(1)];
+                  data[fixture.getJSONArray("channels").getInt(2)] = 255 - data[fixture.getJSONArray("channels").getInt(2)];
+                }
+                else if (fixture.getString("type").equals("monochrome")) {
+                  data[fixture.getInt("channel")] = 255 - data[fixture.getInt("channel")];
+                }
+              }
+            }
+          }
+          break;
+          
+        case 7:
+          // Fixture sweep, cylon
+          // timer[1] = timeout
+          // counter[1] = fixture start counter
+          // counter[2] = direction
+          // counter[3] = speed
+          
+          
+          if (dmx_effect_init) {
+            dmx_effect_init = false;
+            dmx_effect_counter[2] = 1;
+            dmx_effect_counter[3] = 75; //ms
+            dmx_effect_timer[0] = millis() + (dmx_group_max_fixtures * dmx_effect_counter[3] * 4);
+            dmx_effect_timer[1] = millis() + dmx_effect_counter[3];
+          }
+          
+          // Increment fixture counter every N s
+          if (millis() > dmx_effect_timer[1]) {
+            if (dmx_effect_counter[2] > 0) {
+              dmx_effect_counter[1]++;
+            }
+            else {
+              dmx_effect_counter[1]--;
+            }
+            
+            if (dmx_effect_counter[1] <= 1) {
+              dmx_effect_counter[2] = 1;
+            }
+            else if (dmx_effect_counter[1] >= dmx_group_max_fixtures - 1) {
+              dmx_effect_counter[2] = 0;
+            }
+            
+            dmx_effect_timer[1] = millis() + dmx_effect_counter[3];
+          }
+          
+          // Walk fixtures
+          for (int g=0; g<dmx_groups.size(); g++) {
+            cur_fixture = int(dmx_effect_counter[2]);
+            group_fixtures = dmx_groups.getJSONObject(g).getJSONArray("fixtures");
+            for (int f=0; f<group_fixtures.size(); f++) {
+              fixture = group_fixtures.getJSONObject(group_fixtures.size() - f - 1);
+  
+              if (
+                f < dmx_effect_counter[1] - 1 ||
+                f > dmx_effect_counter[1] + 1
+              ) {
+                if (fixture.getString("type").equals("rgb")) {
+                  data[fixture.getJSONArray("channels").getInt(0)] = 0;
+                  data[fixture.getJSONArray("channels").getInt(1)] = 0;
+                  data[fixture.getJSONArray("channels").getInt(2)] = 0;
+                }
+                else if (fixture.getString("type").equals("monochrome")) {
+                  data[fixture.getInt("channel")] = 255 - data[fixture.getInt("channel")];
+                }
+              }
+            }
+          }
+          break;
+          
+      } 
+    }
   }
   return data;
 }
