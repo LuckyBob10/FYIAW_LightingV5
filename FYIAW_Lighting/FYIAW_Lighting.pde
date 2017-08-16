@@ -199,6 +199,18 @@ void draw() {
     beat_pixel_last = beat_pixel_val;
     if (beat_pixel_val == color(255)) {
       beat_count++;
+      
+      // Compute average BPM
+      beat_avg_diff[beat_avg_diff_index] = millis() - beat_last_millis;
+      beat_last_millis = millis();
+      beat_avg_diff_index++;
+      if (beat_avg_diff_index >= beat_avg_diff.length) {
+        beat_avg_diff_index = 0;
+      }
+      for (int i=0; i<beat_avg_diff.length; i++) {
+        beat_avg_bpm += beat_avg_diff[i];
+      }
+      beat_avg_bpm = round(60000 / (beat_avg_bpm / beat_avg_diff.length));      
     }
   }
   
@@ -309,7 +321,9 @@ void draw() {
     "FYIAW Lighting v5 - " +
     int(frameRate) +
     " fps, beatcount " +
-    beat_count
+    beat_count +
+    ", bpm " +
+    beat_avg_bpm
   );
   
 }
@@ -332,8 +346,8 @@ PImage getScreen() {
 // Handle 
 void keyPressed() {
   switch(keyCode) {
-    case 33:
-      // PgUp - increase brightness
+    case 61:
+      // Equal - increase brightness
       dmx_brightness += dmx_brightness_step;
       if (dmx_brightness > 1) {
         dmx_brightness = 1;
@@ -341,8 +355,8 @@ void keyPressed() {
       println("Key - brightness up: " + dmx_brightness);
       break;
 
-    case 34:
-      // PgDn - decrease brightness
+    case 45:
+      // Minus - decrease brightness
       dmx_brightness -= dmx_brightness_step;
       if (dmx_brightness < 0) {
         dmx_brightness = 0;
@@ -350,34 +364,39 @@ void keyPressed() {
       println("Key - brightness down: " + dmx_brightness);
       break;
       
-    case 36:
-      // HOME - Winamp previous effect
+    case 50:
+      // 1 - Winamp previous effect
       println("Key - Winamp previous effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
       
-    case 35:
-      // END - Winamp next effect
+    case 49:
+      // 2 - Winamp next effect
       println("Key - Winamp next effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
       
-    case 112:
-      // F1 - Big Red
+    case 32:
+      // Space - Big Red
       println("Key - Big Red");
+      // Force a big effect
+      dmx_force_effect = true;
+      dmx_effect_category = 4;
       break;
       
-    case 113:
-      // F2 - Effect pause
+    case 57:
+      // 9 - Effect pause
       if (dmx_effect_enabled) {
         println("Key - Effects disabled");
       }
       else {
         println("Key - Effects enabled");
+        // Force an effect
+        dmx_force_effect = true;
       }
       dmx_effect_enabled = !dmx_effect_enabled;
       break;    
       
-    case 116:
-      // F5 - Red
+    case 51:
+      // 3 - Red
       if (dmx_fixed_color_mode != 2) {
         println("Key - DMX red on");
         dmx_fixed_color_mode = 2;
@@ -388,8 +407,8 @@ void keyPressed() {
       }
       break;
 
-    case 117:
-      // F6 - Green
+    case 54:
+      // 6 - Green
       if (dmx_fixed_color_mode != 3) {
         println("Key - DMX green on");
         dmx_fixed_color_mode = 3;
@@ -400,8 +419,8 @@ void keyPressed() {
       }
       break;
 
-    case 118:
-      // F7 - Blue
+    case 55:
+      // 7 - Blue
       if (dmx_fixed_color_mode != 4) {
         println("Key - DMX blue on");
         dmx_fixed_color_mode = 4;
@@ -412,8 +431,8 @@ void keyPressed() {
       }
       break;
       
-    case 119:
-      // F8 - White
+    case 53:
+      // 5 - White
       if (dmx_fixed_color_mode != 5) {
         println("Key - DMX white on");
         dmx_fixed_color_mode = 5;
@@ -424,8 +443,8 @@ void keyPressed() {
       }
       break;
       
-    case 120:
-      // F9 - Black
+    case 52:
+      // 4 - Black
       if (dmx_fixed_color_mode != 6) {
         println("Key - DMX black on");
         dmx_fixed_color_mode = 6;
@@ -436,11 +455,11 @@ void keyPressed() {
       }
       break;
       
-    case 121:
-      // F10 - Rainbow
-      if (dmx_fixed_color_mode != 6) {
+    case 56:
+      // 8 - Rainbow
+      if (dmx_fixed_color_mode != 1) {
         println("Key - DMX rainbow on");
-        dmx_fixed_color_mode = 6;
+        dmx_fixed_color_mode = 1;
       }
       else {
         println("Key - DMX rainbow off");
@@ -448,8 +467,8 @@ void keyPressed() {
       }
       break;
       
-    case 123:
-      // F12 - Effects hard vs soft
+    case 48:
+      // 0 - Effects hard vs soft
       if (dmx_effect_hard) {
         println("Key - DMX effects hard");
         dmx_effect_hard = false;
@@ -465,4 +484,8 @@ void keyPressed() {
       println(dmx_fixed_cur_color[0]);
       break;
   }
+}
+
+void mouseClicked() {
+  println("Mouse clicked at: " + mouseX + ", " + mouseY);
 }

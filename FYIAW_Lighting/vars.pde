@@ -8,24 +8,36 @@ int
   dmx_group_max_fixtures        = 0,
   dmx_fixture_count             = 0,
   dmx_universe_size             = 0,
+  dmx_effect_category           = 0,
+  dmx_effect_category_count     = 2,
+  dmx_effect_category_size[]    = {1, 1, 0, 0, 2},
   dmx_effect_num                = -1,
-  dmx_effect_count              = 7,
-  dmx_effect_force              = -1,
+  dmx_effect_force_num          = -1,
+  dmx_effect_force_category     = -1,
+  dmx_effect_max_time           = 4000,
+  dmx_effect_max_beat_time      = 2000,
   dmx_fixed_color_mode          = 0,
+  dmx_fixed_rainbow_hue         = 0,
+  dmx_fixed_rainbow_time        = 0,
+  dmx_fixed_rainbow_timeout     = 20,
   initial_position_counter      = 0,
   beat_count                    = 0,
+  beat_avg_bpm                  = 0,
+  beat_avg_diff[]               = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  beat_avg_diff_index           = 0,
+  beat_last_millis              = 0,
   beat_pixel_val                = 0,
   beat_pixel_last               = 255,
   beat_pixel_x                  = 0,
   beat_pixel_y                  = 0,
   beat_pixel_last_triggered     = 0,
-  cur_fixture                   = 0
+  cur_fixture                   = 0,
+  cur_group                     = 0
 ;
 
 float
   dmx_brightness      = 1,
-  dmx_brightness_step = .005,
-  dmx_brightness_last = 1
+  dmx_brightness_step = .005
 ;
 
 int[]
@@ -47,8 +59,9 @@ boolean
   dmx_enabled               = true,
   dmx_test                  = false,
   dmx_fixed_color           = false,
+  dmx_force_effect          = false,
   dmx_effect_init           = false,
-  dmx_effect_hard = true,
+  dmx_effect_hard           = false,
   dmx_effect_enabled        = true
 ;
 
@@ -70,6 +83,10 @@ JSONObject
   config,
   fixture,
   group
+;
+
+color
+  dmx_rainbow_color
 ;
 
 int iGammaMap[] = {
