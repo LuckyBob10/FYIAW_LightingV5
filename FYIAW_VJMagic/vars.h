@@ -14,16 +14,19 @@
 #define btn_12     17
 
 bool
-  button_pressed = false
+  button_pressed   = false,
+  keyboard_enabled = true
 ;
 
 uint8_t
+  cur_pressed         = 0,
   debounce_time       = 10,
   strip_brightness    = 64,
   strip_hue           = 0,
   strip_hue_timeout   = 15,
   strip_blank_timeout = 100,
   strip_framerate     = 1000/60,
+  pressed_count       = 0,
   button_pins[] = {
     btn_bigred,
     btn_1,
@@ -42,7 +45,8 @@ uint8_t
 ;
 
 int
-  button_value
+  button_value,
+  button_down[13]
 ;
 
 elapsedMillis
