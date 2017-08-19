@@ -8,7 +8,11 @@
 		"initial_y": 246,
 		"target_frame_rate": 60,
 		"beat_pixel_x": 476,
-		"beat_pixel_y": 196
+		"beat_pixel_y": 196,
+		"time_of_day_brightness": [
+			{"hour": 8, "minute": 0, "brightness": .1},
+			{"hour": 18, "minute": 0, "brightness": 1}
+		]
 	},
 	"led_board": {
 		"enabled": "True",

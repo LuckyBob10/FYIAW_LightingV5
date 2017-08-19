@@ -92,6 +92,9 @@ void setup() {
     fill(255);
     stroke(255);
     
+    // Get time of day brightness settings
+    time_of_day_brightness = config.getJSONObject("general").getJSONArray("time_of_day_brightness");
+    
     // Draw DMX groups
     println(" - Drawing DMX group labels");
     textSize(10);
@@ -316,6 +319,20 @@ void draw() {
     }
   }
   
+  // Time of day brightness changes
+  if (minute() != cur_minute) {
+    // Check only once a minute
+    cur_minute = minute();
+    for (int i=0; i<time_of_day_brightness.size(); i++) {
+      JSONObject o = time_of_day_brightness.getJSONObject(i);
+      if (o.getInt("hour") == hour() && o.getInt("minute") == minute()) {
+        // Found a match
+        println("Time of day brightness change: " + o.getInt("hour") + ":" + o.getInt("minute") + " = " + (o.getFloat("brightness") * 100) + "%");
+        dmx_brightness = o.getFloat("brightness");
+      }
+    }
+  }
+  
   // Set frame title
   frame.setTitle(
     "FYIAW Lighting v5 - " +
@@ -352,7 +369,7 @@ void keyPressed() {
       if (dmx_brightness > 1) {
         dmx_brightness = 1;
       }
-      println("Key - brightness up: " + dmx_brightness);
+      println("Key - brightness up: " + (dmx_brightness * 100) + "%");
       break;
 
     case 45:
@@ -361,7 +378,7 @@ void keyPressed() {
       if (dmx_brightness < 0) {
         dmx_brightness = 0;
       }
-      println("Key - brightness down: " + dmx_brightness);
+      println("Key - brightness down: " + (dmx_brightness * 100) + "%");
       break;
       
     case 50:

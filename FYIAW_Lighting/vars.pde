@@ -32,7 +32,8 @@ int
   beat_pixel_y                  = 0,
   beat_pixel_last_triggered     = 0,
   cur_fixture                   = 0,
-  cur_group                     = 0
+  cur_group                     = 0,
+  cur_minute                    = 0
 ;
 
 float
@@ -76,7 +77,8 @@ PImage        screen_shot;
 JSONArray 
   dmx_groups,
   group_fixtures,
-  capture_pixel
+  capture_pixel,
+  time_of_day_brightness
 ;
 
 JSONObject

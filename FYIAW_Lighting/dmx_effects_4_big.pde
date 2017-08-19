@@ -80,6 +80,7 @@ int[] dmx_effects_big(int[] data) {
     // Center burst white
     // Sweep invert
     // Center burst invert
+    // Per frame hue rotate
   }
   return data;
 }
