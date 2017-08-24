@@ -1,9 +1,10 @@
+import dmxP512.*;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import dmxP512.*;
 import processing.serial.*;
 
-String config_file = "../../config/Firehouse_2017.json";
+String config_file         = "../../config/Firehouse_2017.json";
+String overlay_config_file = "overlay_images/overlay_config.json";
 
 GraphicsEnvironment ge   = GraphicsEnvironment.getLocalGraphicsEnvironment();
 GraphicsDevice[]    gs   = ge.getScreenDevices();
@@ -35,6 +36,10 @@ void setup() {
       "x" +
       config.getJSONObject("general").getInt("capture_size_y")
     );
+    
+    // Get capture aspect ratio
+    capture_aspect_ratio = config.getJSONObject("general").getFloat("capture_size_x") / config.getJSONObject("general").getFloat("capture_size_y");
+    println(" - Capture area aspect ratio: " + capture_aspect_ratio);
     
     // Get number of DMX lighting groups to calculate window Y size
     dmx_groups = config.getJSONObject("dmx").getJSONArray("dmx_groups");
@@ -94,6 +99,7 @@ void setup() {
     
     // Get time of day brightness settings
     time_of_day_brightness = config.getJSONObject("general").getJSONArray("time_of_day_brightness");
+    println(" - Number of time-of-day brightness changes: " + time_of_day_brightness.size());
     
     // Draw DMX groups
     println(" - Drawing DMX group labels");
@@ -170,6 +176,10 @@ void setup() {
     // Reset drawing settings
     stroke(127);
     //noStroke();
+    
+    // Get overlay image config
+    println(" - Loading overlay image config file - note that crashes here likely indicate corrupt JSON syntax");
+    overlay_images_config = loadJSONObject(overlay_config_file);
   }
 }
 

@@ -15,7 +15,7 @@
 		]
 	},
 	"led_board": {
-		"enabled": "True",
+		"enabled": "False",
 		"opc_address": "127.0.0.1",
 		"opc_port": 7890,
 		"board_x1": 0,
@@ -36,7 +36,7 @@
 		},
 		"beat_detection": {
 			"enabled": "True",
-			"trigger_every": 16,
+			"trigger_every": 128,
 			"trigger_chance": 1
 		},
 		"dmx_groups": [

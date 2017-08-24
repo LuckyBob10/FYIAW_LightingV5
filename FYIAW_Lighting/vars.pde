@@ -12,8 +12,8 @@ int
   dmx_effect_category_count     = 2,
   dmx_effect_category_size[]    = {1, 1, 0, 0, 2},
   dmx_effect_num                = -1,
-  dmx_effect_force_num          = -1,
-  dmx_effect_force_category     = -1,
+  dmx_effect_force_num          = 0,
+  dmx_effect_force_category     = 3,
   dmx_effect_max_time           = 4000,
   dmx_effect_max_beat_time      = 2000,
   dmx_fixed_color_mode          = 0,
@@ -37,8 +37,9 @@ int
 ;
 
 float
-  dmx_brightness      = 1,
-  dmx_brightness_step = .005
+  dmx_brightness       = 1,
+  dmx_brightness_step  = .005,
+  capture_aspect_ratio = 0
 ;
 
 int[]
@@ -72,7 +73,6 @@ String
 
 BufferedImage desktop;
 OPC           opc;
-PImage        screen_shot;
 
 JSONArray 
   dmx_groups,
@@ -84,11 +84,20 @@ JSONArray
 JSONObject
   config,
   fixture,
-  group
+  group,
+  overlay_images_config,
+  overlay_object
 ;
 
 color
   dmx_rainbow_color
+;
+
+PImage
+  screen_shot,
+  overlay_image,
+  overlay_images[] = new PImage[255],
+  overlay_buffer
 ;
 
 int iGammaMap[] = {

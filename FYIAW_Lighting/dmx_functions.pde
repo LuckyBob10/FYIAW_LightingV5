@@ -282,6 +282,10 @@ int[] dmx_effects(int[] data) {
       println(" - Ending effect: " + dmx_effect_num);
       dmx_effect_category = -1;
       dmx_effect_num = -1;
+      for (int i=0; i<4; i++) {
+        dmx_effect_timer[i]   = 0;
+        dmx_effect_counter[i] = 0;
+      }
     }
     
     // Check beat count
