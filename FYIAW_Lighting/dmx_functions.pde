@@ -1,7 +1,7 @@
 int[] dmx_test() {
-  int[] dmx_data = new int[255];
+  int[] dmx_data = new int[512];
   // Cycle all DMX channels in universe
-  
+
   return dmx_data;
 }
 
@@ -36,16 +36,16 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
     ret[1] = 255 - ret[1];
     ret[2] = 255 - ret[2];
   }
-  switch (dmx_fixed_color_mode) { 
+  switch (dmx_fixed_color_mode) {
     case 0:
       // Fixed color not enabled - apply smoothing to captured values
       for (int i=0; i<3; i++) {
-        ret[i] = dmx_smoothing(
+        ret[i] = dmx_smooth(
           fixture.getJSONArray("channels").getInt(i),
           ret[i],
           group.getInt("smoothing_frames"),
           group.getFloat("smoothing_bias_positive"),
-          group.getFloat("smoothing_bias_negative")    
+          group.getFloat("smoothing_bias_negative")
         );
       }
       break;
@@ -68,12 +68,12 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       // Apply smoothing if enabled
       if (!dmx_effect_hard) {
         for (int i=0; i<3; i++) {
-          ret[i] = dmx_smoothing(
+          ret[i] = dmx_smooth(
             fixture.getJSONArray("channels").getInt(i),
             ret[i],
             group.getInt("smoothing_frames"),
             group.getFloat("smoothing_bias_positive"),
-            group.getFloat("smoothing_bias_negative")    
+            group.getFloat("smoothing_bias_negative")
           );
         }
       }
@@ -87,12 +87,12 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       // Apply smoothing if enabled
       if (!dmx_effect_hard) {
         for (int i=0; i<3; i++) {
-          ret[i] = dmx_smoothing(
+          ret[i] = dmx_smooth(
             fixture.getJSONArray("channels").getInt(i),
             ret[i],
             group.getInt("smoothing_frames"),
             group.getFloat("smoothing_bias_positive"),
-            group.getFloat("smoothing_bias_negative")    
+            group.getFloat("smoothing_bias_negative")
           );
         }
       }
@@ -106,17 +106,17 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       // Apply smoothing if enabled
       if (!dmx_effect_hard) {
         for (int i=0; i<3; i++) {
-          ret[i] = dmx_smoothing(
+          ret[i] = dmx_smooth(
             fixture.getJSONArray("channels").getInt(i),
             ret[i],
             group.getInt("smoothing_frames"),
             group.getFloat("smoothing_bias_positive"),
-            group.getFloat("smoothing_bias_negative")    
+            group.getFloat("smoothing_bias_negative")
           );
         }
       }
       break;
-      
+
     case 4:
       // Fixed color - blue
       ret[0] = 0;
@@ -125,17 +125,17 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       // Apply smoothing if enabled
       if (!dmx_effect_hard) {
         for (int i=0; i<3; i++) {
-          ret[i] = dmx_smoothing(
+          ret[i] = dmx_smooth(
             fixture.getJSONArray("channels").getInt(i),
             ret[i],
             group.getInt("smoothing_frames"),
             group.getFloat("smoothing_bias_positive"),
-            group.getFloat("smoothing_bias_negative")    
+            group.getFloat("smoothing_bias_negative")
           );
         }
       }
       break;
-      
+
     case 5:
       // Fixed color - white
       ret[0] = round(255 * dmx_brightness);
@@ -144,17 +144,17 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       // Apply smoothing if enabled
       if (!dmx_effect_hard) {
         for (int i=0; i<3; i++) {
-          ret[i] = dmx_smoothing(
+          ret[i] = dmx_smooth(
             fixture.getJSONArray("channels").getInt(i),
             ret[i],
             group.getInt("smoothing_frames"),
             group.getFloat("smoothing_bias_positive"),
-            group.getFloat("smoothing_bias_negative")    
+            group.getFloat("smoothing_bias_negative")
           );
         }
       }
       break;
-      
+
     case 6:
       // Fixed color - black
       ret[0] = 0;
@@ -163,12 +163,12 @@ int[] dmx_fixture_rgb(JSONObject fixture, JSONObject group) {
       // Apply smoothing if enabled
       if (!dmx_effect_hard) {
         for (int i=0; i<3; i++) {
-          ret[i] = dmx_smoothing(
+          ret[i] = dmx_smooth(
             fixture.getJSONArray("channels").getInt(i),
             ret[i],
             group.getInt("smoothing_frames"),
             group.getFloat("smoothing_bias_positive"),
-            group.getFloat("smoothing_bias_negative")    
+            group.getFloat("smoothing_bias_negative")
           );
         }
       }
@@ -202,17 +202,17 @@ int dmx_fixture_monochrome(JSONObject fixture, JSONObject group) {
   else if (fixture.getString("sample_from").equals("blue")) {
     ret = int(blue(cap));
   }
-  ret = dmx_smoothing(
+  ret = dmx_smooth(
     fixture.getInt("channel"),
     ret,
     group.getInt("smoothing_frames"),
     group.getFloat("smoothing_bias_positive"),
-    group.getFloat("smoothing_bias_negative")    
+    group.getFloat("smoothing_bias_negative")
   );
   return ret;
 }
 
-int dmx_smoothing(
+int dmx_smooth(
   int channel,
   int new_value,
   int frames,
@@ -232,7 +232,7 @@ int dmx_smoothing(
     }
     avg /= frames;
     ret  = avg;
-    
+
     // Bias new value
     // TODO
     /*delt = new_value - avg;
@@ -242,7 +242,7 @@ int dmx_smoothing(
     else if (ret < avg && ret > 0) {
       new_value += abs(delt) * bias_positive;
     }*/
-    
+
     // Increment channel placeholder
     if (dmx_smoothing[channel][0] >= frames) {
       dmx_smoothing[channel][0] = 1;
@@ -250,12 +250,12 @@ int dmx_smoothing(
     else {
       dmx_smoothing[channel][0]++;
     }
-    
+
     // Inject new value into smoothing array
     dmx_smoothing[channel][dmx_smoothing[channel][0]] = new_value;
-    
+
     // Return new value
-    //println("Smoothing " + channel + " - new value: " + new_value + ", avg:" + avg + ", placeholder: " + dmx_smoothing[channel][0]);
+    //println("Smoothing " + channel + " - ret: " + ret + " - new value: " + new_value + ", avg:" + avg + ", placeholder: " + dmx_smoothing[channel][0]);
   }
   return ret;
 }
@@ -270,7 +270,7 @@ int[] dmx_effects(int[] data) {
           dmx_effect_timer[0] > 0 &&
           millis() >= dmx_effect_timer[0]
         ) ||
-        
+
         // Beat counter exceeds counter slot zero value
         (
           dmx_effect_counter[0] > 0 &&
@@ -287,7 +287,7 @@ int[] dmx_effects(int[] data) {
         dmx_effect_counter[i] = 0;
       }
     }
-    
+
     // Check beat count
     if ((
       beat_count % config.getJSONObject("dmx").getJSONObject("beat_detection").getInt("trigger_every") == 0 &&
@@ -300,7 +300,7 @@ int[] dmx_effects(int[] data) {
       dmx_force_effect = false;
       if (random(1) < config.getJSONObject("dmx").getJSONObject("beat_detection").getInt("trigger_chance")) {
         beat_pixel_last_triggered = beat_count;
-        
+
         // Start effect
         // Randomize category as long as it's below dmx_effect_category_count
         if (dmx_effect_category <= dmx_effect_category_count) {
@@ -308,7 +308,7 @@ int[] dmx_effects(int[] data) {
         }
         // Randomize effect inside category
         dmx_effect_num = floor(random(dmx_effect_category_size[dmx_effect_category]));
-        
+
         // Manually force effect for testing
         if (dmx_effect_force_category > -1) {
           dmx_effect_category = dmx_effect_force_category;
@@ -316,19 +316,19 @@ int[] dmx_effects(int[] data) {
         if (dmx_effect_force_num > -1) {
           dmx_effect_num = dmx_effect_force_num;
         }
-        
+
         println(" - Starting category " + dmx_effect_category + " effect " + dmx_effect_num + " on beat #" + beat_count);
         dmx_effect_init = true;
         for (int i=0; i<4; i++) {
           dmx_effect_counter[i] = 0;
         }
-        
+
       }
     }
-    
+
     // Apply gamma ramp to all DMX channels
     data = dmx_gamma(data);
-    
+
     // Render effects
     if (dmx_effect_num > -1) {
       switch(dmx_effect_category) {
@@ -336,22 +336,22 @@ int[] dmx_effects(int[] data) {
           // Basic effects
           data = dmx_effects_basic(data);
           break;
-          
+
         case 1:
           // Fixture effects
           data = dmx_effects_fixtures(data);
           break;
-          
+
         case 2:
           // Group effects
           data = dmx_effects_groups(data);
           break;
-          
+
         case 3:
           // Overlay effects
           data = dmx_effects_overlay(data);
           break;
-          
+
         case 4:
           // Big red button effects
           data = dmx_effects_big(data);

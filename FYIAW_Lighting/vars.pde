@@ -33,7 +33,13 @@ int
   beat_pixel_last_triggered     = 0,
   cur_fixture                   = 0,
   cur_group                     = 0,
-  cur_minute                    = 0
+  cur_minute                    = 0,
+  overlay_animation_count       = 0,
+  scroll_image_max_height       = 0,
+  scroll_image_xpos             = 0,
+  draw_offset_y                 = 0,
+  capture_size_y                = 0,
+  pg_width                      = 0
 ;
 
 float
@@ -53,7 +59,7 @@ float[]
 ;
 
 int[][]
-  dmx_smoothing = new int[255][600]
+  dmx_smoothing = new int[512][600]
 ;
 
 boolean
@@ -74,11 +80,12 @@ String
 BufferedImage desktop;
 OPC           opc;
 
-JSONArray 
+JSONArray
   dmx_groups,
   group_fixtures,
   capture_pixel,
-  time_of_day_brightness
+  time_of_day_brightness,
+  overlay_animations
 ;
 
 JSONObject
@@ -86,7 +93,9 @@ JSONObject
   fixture,
   group,
   overlay_images_config,
-  overlay_object
+  overlay_object,
+  scroll_image_config,
+  scroll_images
 ;
 
 color
@@ -97,8 +106,11 @@ PImage
   screen_shot,
   overlay_image,
   overlay_images[] = new PImage[255],
-  overlay_buffer
+  overlay_buffer,
+  scroll_image
 ;
+
+PGraphics pg;
 
 int iGammaMap[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,

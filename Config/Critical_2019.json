@@ -1,0 +1,370 @@
+{
+  "general": {
+		"window_size_x": 0,
+		"window_size_y": 0,
+		"capture_size_x": 480,
+		"capture_size_y": 200,
+		"initial_x": 5,
+		"initial_y": 246,
+		"target_frame_rate": 60,
+		"beat_pixel_x": 476,
+		"beat_pixel_y": 196,
+		"time_of_day_brightness": [
+			{"hour": 18, "minute": 0, "brightness": 1}
+		],
+        "image_scroll_path": "../../config/images/",
+        "initial_scroll_image": "harmony3.png",
+        "scroll_image_height": 16
+	},
+    "scroll_images": {
+        "harmony3.png": {
+            "frame_delay_ms": 17,
+            "scroll_distance_px": 5,
+            "display_for_beats": 0,
+            "display_for_seconds": 30,
+            "next_animation": "harmony2.png",
+            "trigger_key": null
+        },
+        "harmony2.png": {
+        	"frame_delay_ms": 100,
+            "scroll_frames": 15,
+            "scroll_distance": 10,
+            "display_for_beats": 0,
+            "display_for_seconds": 15,
+            "next_animation": "harmony1.png",
+            "trigger_key": null
+        }
+    },
+	"led_board": {
+		"enabled": "True",
+		"opc_address": "127.0.0.1",
+		"opc_port": 7890,
+		"board_x1": 0,
+		"board_y1": 0,
+		"board_x2": 480,
+		"board_y2": 200,
+		"pixels_x": 60,
+		"pixels_y": 20,
+		"spacing_x": 1,
+		"spacing_y": 1
+	},
+	"dmx": {
+		"general": {
+			"enabled": "True",
+			"com_port": "COM6",
+			"com_baudrate": 115200,
+			"brightness": 1
+		},
+		"beat_detection": {
+			"enabled": "True",
+			"trigger_every": 128,
+			"trigger_chance": 1
+		},
+		"dmx_groups": [
+			{
+				"name": "Camp Interior Floods",
+				"description": "",
+				"smoothing_frames": 15,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
+				"brightness": 1,
+				"beat_effects": "False",
+				"fixtures": [
+					{
+						"name": "Flood #1",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [1,2,3],
+						"capture_pixel": [22,50]
+					},
+					{
+						"name": "Flood #2",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [4,5,6],
+						"capture_pixel": [44,100]
+					},
+					{
+						"name": "Flood #3",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [7,8,9],
+						"capture_pixel": [66,150]
+					},
+					{
+						"name": "Flood #4",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [10,11,12],
+						"capture_pixel": [88,100]
+					},
+					{
+						"name": "Flood #5",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [13,14,15],
+						"capture_pixel": [110,50]
+					},
+					{
+						"name": "Flood #6",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [16,17,18],
+						"capture_pixel": [132,100]
+					},
+					{
+						"name": "Flood #7",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [19,20,21],
+						"capture_pixel": [154,150]
+					},
+					{
+						"name": "Flood #8",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [22,23,24],
+						"capture_pixel": [176,100]
+					},
+					{
+						"name": "Flood #9",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [25,26,27],
+						"capture_pixel": [198,50]
+					},
+					{
+						"name": "Flood #10",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [28,29,30],
+						"capture_pixel": [220,100]
+					},
+					{
+						"name": "Flood #11",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [31,32,33],
+						"capture_pixel": [242,150]
+					},
+					{
+						"name": "Flood #12",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [34,35,36],
+						"capture_pixel": [264,100]
+					},
+					{
+						"name": "Flood #13",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [37,38,39],
+						"capture_pixel": [286,50]
+					},
+					{
+						"name": "Flood #14",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [40,41,42],
+						"capture_pixel": [308,100]
+					},
+					{
+						"name": "Flood #15",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [43,44,45],
+						"capture_pixel": [330,150]
+					},
+					{
+						"name": "Flood #16",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [46,47,48],
+						"capture_pixel": [352,100]
+					},
+					{
+						"name": "Flood #17",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [49,50,51],
+						"capture_pixel": [374,50]
+					},
+					{
+						"name": "Flood #18",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [52,53,54],
+						"capture_pixel": [396,100]
+					},
+					{
+						"name": "Flood #19",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [55,56,57],
+						"capture_pixel": [418,150]
+					},
+					{
+						"name": "Flood #20",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [58,59,60],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #21",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [61,62,63],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #22",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [64,65,66],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #23",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [67,68,69],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #24",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [70,71,72],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #25",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [73,74,75],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #26",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [76,77,78],
+						"capture_pixel": [440,100]
+					}
+				]
+			},
+
+
+			{
+				"name": "100W Floods",
+				"description": "",
+				"smoothing_frames": 30,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
+				"brightness": 1,
+				"beat_effects": "True",
+				"fixtures": [
+					{
+						"name": "Large Flood #1",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 180,
+						"invert": "True",
+						"channels": [79,80,81],
+						"capture_pixel": [240,50]
+					},
+					{
+						"name": "Large Flood #2",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 180,
+						"invert": "True",
+						"channels": [82,83,84],
+						"capture_pixel": [240,150]
+					}
+				]
+			}
+		]
+	}
+}

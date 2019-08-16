@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 import processing.serial.*;
 
-String config_file         = "../../config/Firehouse_2017.json";
+String config_file         = "../../config/Firehouse_2018.json";
 String overlay_config_file = "overlay_images/overlay_config.json";
 
 GraphicsEnvironment ge   = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -15,11 +15,11 @@ DmxP512             dmx;
 void setup() {
   println("FYIAW Lighting v5");
   println("-----------------");
-  
+
   // Check if config_file exists
   println(" - Checking if config file exists: " + config_file);
   File cf = new File(dataPath(config_file));
-  
+
   if (!cf.exists()) {
     println("ERROR: Config file does not exist!");
     exit();
@@ -28,24 +28,25 @@ void setup() {
     // Load JSON config
     println(" - Loading config file - note that crashes here likely indicate corrupt JSON syntax");
     config = loadJSONObject(config_file);
-    
+
     // Show capture size
+    capture_size_y = config.getJSONObject("general").getInt("capture_size_y");
     println(
       " - Capture size: " +
-      config.getJSONObject("general").getInt("capture_size_x") + 
+      config.getJSONObject("general").getInt("capture_size_x") +
       "x" +
-      config.getJSONObject("general").getInt("capture_size_y")
+      capture_size_y
     );
-    
+
     // Get capture aspect ratio
     capture_aspect_ratio = config.getJSONObject("general").getFloat("capture_size_x") / config.getJSONObject("general").getFloat("capture_size_y");
     println(" - Capture area aspect ratio: " + capture_aspect_ratio);
-    
+
     // Get number of DMX lighting groups to calculate window Y size
     dmx_groups = config.getJSONObject("dmx").getJSONArray("dmx_groups");
     println(" - Found " + dmx_groups.size() + " DMX group(s) in config");
-    window_size_y = config.getJSONObject("general").getInt("capture_size_y") + window_size_offset_y + (window_size_dmx_group_height * dmx_groups.size());
-    
+    window_size_y = capture_size_y + window_size_offset_y + (window_size_dmx_group_height * dmx_groups.size()) + config.getJSONObject("general").getInt("scroll_image_height") + 10;
+
     // Get max number of fixtures to calculate window X size and number of DMX fixtures
     for (int i=0; i<dmx_groups.size(); i++) {
       println(" - Counting fixtures in DMX group: " + i);
@@ -57,13 +58,14 @@ void setup() {
     }
     println(" - Total number of DMX fixtures: " + dmx_universe_size);
     println(" - Max number of fixtures in a DMX group: " + dmx_group_max_fixtures);
+
+    // Set window size
     int size_min_x = window_size_dmx_fixture_width * dmx_group_max_fixtures;
-    window_size_x = config.getJSONObject("general").getInt("capture_size_x") + window_size_offset_x;
+    window_size_x = config.getJSONObject("general").getInt("capture_size_x") + window_size_offset_y;
     if (window_size_x < size_min_x) {
       window_size_x = size_min_x;
     }
-      
-    // Set window size
+
     if (
       config.getJSONObject("general").getInt("window_size_x") > 0 &&
       config.getJSONObject("general").getInt("window_size_x") > window_size_x
@@ -78,7 +80,11 @@ void setup() {
     }
     println(" - Final window size: " + window_size_x + "x" + window_size_y);
     size(window_size_x, window_size_y);
-    
+
+    // Load scroll image
+    scroll_images = config.getJSONObject("scroll_images");
+    createScrollImage(config.getJSONObject("general").getString("initial_scroll_image"));
+
     // Set frame rate
     println(" - Target frame rate: " + config.getJSONObject("general").getInt("target_frame_rate") + "fps");
     frameRate(config.getJSONObject("general").getInt("target_frame_rate"));
@@ -86,32 +92,34 @@ void setup() {
       frame.setAlwaysOnTop(true);
     }
     frame.setResizable(false);
-    
+
     // Set beat pixel
     beat_pixel_x = config.getJSONObject("general").getInt("beat_pixel_x");
     beat_pixel_y = config.getJSONObject("general").getInt("beat_pixel_y");
-    
+
     // Draw initial layout
     colorMode(RGB, 255, 255, 255);
     background(0);
     fill(255);
     stroke(255);
-    
+    image(pg, 0, capture_size_y);
+
     // Get time of day brightness settings
     time_of_day_brightness = config.getJSONObject("general").getJSONArray("time_of_day_brightness");
     println(" - Number of time-of-day brightness changes: " + time_of_day_brightness.size());
-    
+
     // Draw DMX groups
+    draw_offset_y = config.getJSONObject("general").getInt("scroll_image_height") + 16;
     println(" - Drawing DMX group labels");
     textSize(10);
     for (int i=0; i<dmx_groups.size(); i++) {
       text(
-        "DMX Group: " + dmx_groups.getJSONObject(i).getString("name"),
+        dmx_groups.getJSONObject(i).getString("name"),
         0,
-        config.getJSONObject("general").getInt("capture_size_y") + 8 + (i * 32)
+        capture_size_y + (i * 32) + draw_offset_y
       );
     }
-    
+
     // Set up LED board
     if (!config.getJSONObject("led_board").getBoolean("enabled")) {
       println(" - LED board disabled for this session");
@@ -122,10 +130,10 @@ void setup() {
         opc = new OPC(this, config.getJSONObject("led_board").getString("opc_address"), config.getJSONObject("led_board").getInt("opc_port"));
         // TODO: Use board_x1~board_y2 for placement of capture area
         int led_spacing_x = floor(config.getJSONObject("general").getInt("capture_size_x") / (config.getJSONObject("led_board").getInt("pixels_x") * config.getJSONObject("led_board").getFloat("spacing_x")));
-        int led_spacing_y = floor(config.getJSONObject("general").getInt("capture_size_y") / (config.getJSONObject("led_board").getInt("pixels_y") * config.getJSONObject("led_board").getFloat("spacing_y")));
+        int led_spacing_y = floor(capture_size_y / (config.getJSONObject("led_board").getInt("pixels_y") * config.getJSONObject("led_board").getFloat("spacing_y")));
         println(" - LED board pixel count: " + config.getJSONObject("led_board").getInt("pixels_x") + "x" + config.getJSONObject("led_board").getInt("pixels_y"));
         println(" - LED board capture pixel spacing: " + led_spacing_x + "x" + led_spacing_y);
-        
+
         for (int led_strip=0; led_strip<config.getJSONObject("led_board").getInt("pixels_y"); led_strip++) {
           println(" - Adding LED strip #" + led_strip);
           // ledStrip(int index, int count, float x, float y, float spacing, float angle, boolean reversed)
@@ -147,7 +155,7 @@ void setup() {
         led_board_enabled = false;
       }
     }
-    
+
     // Set up DMX output device
     if (!config.getJSONObject("dmx").getJSONObject("general").getBoolean("enabled")) {
       println(" - DMX output disabled for this session");
@@ -156,7 +164,7 @@ void setup() {
     else {
       println(" - Configuring DMXPro output with universe size: " + dmx_universe_size);
       try {
-        dmx = new DmxP512(this, 150, false);
+        dmx = new DmxP512(this, 512, false);
         dmx.setupDmxPro(
           config.getJSONObject("dmx").getJSONObject("general").getString("com_port"),
           config.getJSONObject("dmx").getJSONObject("general").getInt("com_baudrate")
@@ -166,19 +174,19 @@ void setup() {
       catch (Exception e) {
         println("WARNING: Could not connect to DMXPro serial port: " + config.getJSONObject("dmx").getJSONObject("general").getString("com_port"));
         println("         DMX output will be forcibly disabled for this session");
-        dmx_enabled = false;   
+        dmx_enabled = false;
       }
     }
-    
+
     // Set up screen capture object
-    desktop = new BufferedImage(mode.getWidth(), config.getJSONObject("general").getInt("capture_size_y"), BufferedImage.TYPE_INT_RGB);
-    
+    desktop = new BufferedImage(mode.getWidth(), capture_size_y, BufferedImage.TYPE_INT_RGB);
+
     // Reset drawing settings
     stroke(127);
     //noStroke();
-    
+
     // Get overlay image config
-    println(" - Loading overlay image config file - note that crashes here likely indicate corrupt JSON syntax");
+    println(" - Loading overlay and scroll image config - note that crashes here likely indicate corrupt JSON syntax");
     overlay_images_config = loadJSONObject(overlay_config_file);
   }
 }
@@ -192,7 +200,7 @@ void draw() {
     );
     initial_position_counter++;
   }
-  
+
   // Capture and display screen
   screen_shot = getScreen();
   image(
@@ -200,19 +208,26 @@ void draw() {
     0,
     0,
     width,
-    config.getJSONObject("general").getInt("capture_size_y")
+    capture_size_y
   );
-  
+
+  // Display scroll image
+  image(pg, scroll_image_xpos, capture_size_y);
+  scroll_image_xpos -= scroll_image_config.getInt("scroll_distance_px");
+  if (scroll_image_xpos <= -(scroll_image.width)) {
+    scroll_image_xpos = 0;
+  }
+
   // Beat detection
   beat_pixel_val = get(beat_pixel_x, beat_pixel_y);
   if (
-    (beat_pixel_val == color(255) || beat_pixel_val == color(0)) && 
+    (beat_pixel_val == color(255) || beat_pixel_val == color(0)) &&
     beat_pixel_val != beat_pixel_last
   ) {
     beat_pixel_last = beat_pixel_val;
     if (beat_pixel_val == color(255)) {
       beat_count++;
-      
+
       // Compute average BPM
       beat_avg_diff[beat_avg_diff_index] = millis() - beat_last_millis;
       beat_last_millis = millis();
@@ -223,12 +238,12 @@ void draw() {
       for (int i=0; i<beat_avg_diff.length; i++) {
         beat_avg_bpm += beat_avg_diff[i];
       }
-      beat_avg_bpm = round(60000 / (beat_avg_bpm / beat_avg_diff.length));      
+      beat_avg_bpm = round(60000 / (beat_avg_bpm / beat_avg_diff.length));
     }
   }
-  
+
   // DMX
-  int[] dmx_data = new int[255];
+  int[] dmx_data = new int[512];
   if (dmx_test) {
     dmx_data = dmx_test();
   }
@@ -238,11 +253,11 @@ void draw() {
       // Walk all DMX group fixtures
       group = dmx_groups.getJSONObject(group_num);
       group_fixtures = group.getJSONArray("fixtures");
-      
+
       for (int fixture_num=0; fixture_num<group_fixtures.size(); fixture_num++) {
         fixture = group_fixtures.getJSONObject(fixture_num);
         fixture_type = fixture.getString("type");
-        
+
         // RGB fixture
         if (fixture_type.equals("rgb")) {
           int[] fixture_color = dmx_fixture_rgb(fixture, group);
@@ -250,39 +265,39 @@ void draw() {
           dmx_data[fixture.getJSONArray("channels").getInt(1)] = fixture_color[1];
           dmx_data[fixture.getJSONArray("channels").getInt(2)] = fixture_color[2];
         }
-        
-        // Monochrome fixture 
+
+        // Monochrome fixture
         else if (fixture_type.equals("monochrome")) {
           dmx_data[fixture.getInt("channel")] = dmx_fixture_monochrome(fixture, group);
         }
-        
+
         // Static fixture
         else if (fixture_type.equals("fixed")) {
           dmx_data[fixture.getInt("channel")] = fixture.getInt("value");
         }
-        
+
         // Unhandled fixture type
         else {
           println(" - Unhandled fixture type: '" + fixture_type + "', name: " + fixture.getString("name"));
         }
       }
     }
-  
+
     // Apply effects
     if (dmx_fixed_color_mode == 0) {
       dmx_data = dmx_effects(dmx_data);
     }
-    
+
     // Render to screen
     for (int group_num=0; group_num<dmx_groups.size(); group_num++) {
       // Walk all DMX group fixtures
       group = dmx_groups.getJSONObject(group_num);
       group_fixtures = group.getJSONArray("fixtures");
-      
+
       for (int fixture_num=0; fixture_num<group_fixtures.size(); fixture_num++) {
         fixture = group_fixtures.getJSONObject(fixture_num);
         fixture_type = fixture.getString("type");
-        
+
         if (fixture_type.equals("rgb")) {
           fill(
             dmx_data[fixture.getJSONArray("channels").getInt(0)],
@@ -291,7 +306,7 @@ void draw() {
           );
           rect(
             fixture_num * 24,
-            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 10,
+            capture_size_y + (group_num * 32) + draw_offset_y + 2,
             16,
             16
           );
@@ -301,34 +316,34 @@ void draw() {
           fill(channel_value, channel_value, channel_value);
           ellipse(
             fixture_num * 24 + 8,
-            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 18,
+            capture_size_y + (group_num * 32) + draw_offset_y + 10,
             16,
             16
           );
         }
-        
+
         // Static fixture
         else if (fixture_type.equals("fixed")) {
           int channel_value = dmx_data[fixture.getInt("channel")];
           fill(channel_value, channel_value, channel_value);
           triangle(
             fixture_num * 24,
-            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 26,
+            capture_size_y + (group_num * 32) + 26,
             fixture_num * 24 + 8,
-            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 10,
+            capture_size_y + (group_num * 32) + 10,
             fixture_num * 24 + 16,
-            config.getJSONObject("general").getInt("capture_size_y") + (group_num * 32) + 26
+            capture_size_y + (group_num * 32) + 26
           );
         }
       }
     }
-    
+
     // Send to DMXPro
     if (dmx_enabled) {
       dmx.set(0, dmx_data);
     }
   }
-  
+
   // Time of day brightness changes
   if (minute() != cur_minute) {
     // Check only once a minute
@@ -342,25 +357,25 @@ void draw() {
       }
     }
   }
-  
+
   // Set frame title
   frame.setTitle(
-    "FYIAW Lighting v5 - " +
+    "FYIAW Lv5 " +
     int(frameRate) +
-    " fps, beatcount " +
+    " fps, beat " +
     beat_count +
     ", bpm " +
     beat_avg_bpm
   );
-  
+
 }
 
 PImage getScreen() {
   Rectangle bounds = new Rectangle(
     frame.getLocation().x,
-    frame.getLocation().y - config.getJSONObject("general").getInt("capture_size_y") - 24,
+    frame.getLocation().y - capture_size_y - 24,
     width,
-    config.getJSONObject("general").getInt("capture_size_y")
+    capture_size_y
   );
   try {
     desktop = new Robot(gs[0]).createScreenCapture(bounds);
@@ -370,7 +385,7 @@ PImage getScreen() {
   return (new PImage(desktop));
 }
 
-// Handle 
+// Handle
 void keyPressed() {
   switch(keyCode) {
     case 61:
@@ -390,17 +405,17 @@ void keyPressed() {
       }
       println("Key - brightness down: " + (dmx_brightness * 100) + "%");
       break;
-      
+
     case 50:
       // 1 - Winamp previous effect
       println("Key - Winamp previous effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
-      
+
     case 49:
       // 2 - Winamp next effect
       println("Key - Winamp next effect - WARNING - this should not have been caught by FYIAW_LightFocus.ahk");
       break;
-      
+
     case 32:
       // Space - Big Red
       println("Key - Big Red");
@@ -408,7 +423,7 @@ void keyPressed() {
       dmx_force_effect = true;
       dmx_effect_category = 4;
       break;
-      
+
     case 57:
       // 9 - Effect pause
       if (dmx_effect_enabled) {
@@ -420,8 +435,8 @@ void keyPressed() {
         dmx_force_effect = true;
       }
       dmx_effect_enabled = !dmx_effect_enabled;
-      break;    
-      
+      break;
+
     case 51:
       // 3 - Red
       if (dmx_fixed_color_mode != 2) {
@@ -457,7 +472,7 @@ void keyPressed() {
         dmx_fixed_color_mode = 0;
       }
       break;
-      
+
     case 53:
       // 5 - White
       if (dmx_fixed_color_mode != 5) {
@@ -469,7 +484,7 @@ void keyPressed() {
         dmx_fixed_color_mode = 0;
       }
       break;
-      
+
     case 52:
       // 4 - Black
       if (dmx_fixed_color_mode != 6) {
@@ -481,7 +496,7 @@ void keyPressed() {
         dmx_fixed_color_mode = 0;
       }
       break;
-      
+
     case 56:
       // 8 - Rainbow
       if (dmx_fixed_color_mode != 1) {
@@ -493,7 +508,7 @@ void keyPressed() {
         dmx_fixed_color_mode = 0;
       }
       break;
-      
+
     case 48:
       // 0 - Effects hard vs soft
       if (dmx_effect_hard) {
@@ -515,4 +530,31 @@ void keyPressed() {
 
 void mouseClicked() {
   println("Mouse clicked at: " + mouseX + ", " + mouseY);
+}
+
+void createScrollImage(String image_name) {
+  try {
+    scroll_image_config = scroll_images.getJSONObject(image_name);
+    scroll_image = loadImage(
+      config.getJSONObject("general").getString("image_scroll_path") +
+      image_name
+    );
+    int tile_x = (int) Math.ceil((double) window_size_x / (double) scroll_image.width) + 1;
+    pg_width = tile_x * scroll_image.width;
+    int pg_height = config.getJSONObject("general").getInt("scroll_image_height");
+    println(" - Creating scroll image buffer " + pg_width + "x" + pg_height + " (" + tile_x + " tiles)");
+    pg = createGraphics(pg_width, pg_height);
+    pg.beginDraw();
+    pg.background(0);
+    for (int i=0; i<tile_x; i++) {
+      pg.image(scroll_image, i * scroll_image.width, 0);
+    }
+    pg.endDraw();
+  }
+  catch (Exception e) {
+    pg = createGraphics(1, 1);
+    pg.beginDraw();
+    pg.background(0);
+    pg.endDraw();
+  }
 }

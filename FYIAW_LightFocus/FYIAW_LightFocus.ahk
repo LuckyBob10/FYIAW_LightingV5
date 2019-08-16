@@ -1,4 +1,4 @@
-﻿; Keeps FYIAW_Lighting in focus
+﻿; Keeps FYIAW in focus
 
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
@@ -6,30 +6,33 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 SetTitleMatchMode 2
-SetTimer LightFocus, 10000
+SetTimer LightFocus, 2500
+FYIAWWinName = FYIAW Lv
+VisualizerWinName = Visualizations
+WinTransitionTime = 25
 
 1::
-IfWinExist Visualizations
+IfWinExist %VisualizerWinName%
 {
-	WinActivate Visualizations
-	Sleep 50
+	WinActivate %VisualizerWinName%
+	Sleep %WinTransitionTime%
 	Send y
-	IfWinExist FYIAW Lighting u
+	IfWinExist %FYIAWWinName%
 	{
-		WinActivate FYIAW Lighting u
+		WinActivate %FYIAWWinName%
 	}
 }
 return
 
 2::
-IfWinExist Visualizations
+IfWinExist %VisualizerWinName%
 {
-	WinActivate Visualizations
-	Sleep 50
+	WinActivate %VisualizerWinName%
+	Sleep %WinTransitionTime%
 	Send u
-	IfWinExist FYIAW Lighting v
+	IfWinExist %FYIAWWinName%
 	{
-		WinActivate FYIAW Lighting v
+		WinActivate %FYIAWWinName%
 	}
 }
 return
@@ -39,8 +42,8 @@ IfWinExist Winamp
 {
 	WinActivate Winamp
 }
-IfWinExist FYIAW Lighting v
+IfWinExist %FYIAWWinName%
 {
-	WinActivate FYIAW Lighting v
+	WinActivate %FYIAWWinName%
 }
 return

@@ -15,7 +15,7 @@
 		]
 	},
 	"led_board": {
-		"enabled": "False",
+		"enabled": "True",
 		"opc_address": "127.0.0.1",
 		"opc_port": 7890,
 		"board_x1": 0,
@@ -23,15 +23,15 @@
 		"board_x2": 480,
 		"board_y2": 200,
 		"pixels_x": 60,
-		"pixels_y": 16,
+		"pixels_y": 20,
 		"spacing_x": 1,
 		"spacing_y": 1
 	},
 	"dmx": {
 		"general": {
 			"enabled": "True",
-			"com_port": "COM8",
-			"com_baudrate": 115000,
+			"com_port": "COM6",
+			"com_baudrate": 115200,
 			"brightness": 1
 		},
 		"beat_detection": {
@@ -43,7 +43,7 @@
 			{
 				"name": "Firehouse Floods",
 				"description": "",
-				"smoothing_frames": 30,
+				"smoothing_frames": 5,
 				"smoothing_bias_positive": .1,
 				"smoothing_bias_negative": .9,
 				"brightness": 1,
@@ -191,8 +191,8 @@
 					}
 				]
 			},
-			
-			
+
+
 			{
 				"name": "Firehouse Strips - Floor 5",
 				"description": "",
@@ -284,8 +284,8 @@
 					}
 				]
 			},
-			
-			
+
+
 			{
 				"name": "Firehouse Strips - Floor 4",
 				"description": "",
@@ -377,8 +377,8 @@
 					}
 				]
 			},
-			
-			
+
+
 			{
 				"name": "Firehouse Strips - Floor 3",
 				"description": "",
@@ -470,8 +470,8 @@
 					}
 				]
 			},
-			
-			
+
+
 			{
 				"name": "Firehouse Strips - Floor 2",
 				"description": "",

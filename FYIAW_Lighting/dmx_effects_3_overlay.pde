@@ -8,14 +8,14 @@ int[] dmx_effects_overlay(int[] data) {
       // timer[1]   = frame delay
       
       if (dmx_effect_init) {
-        println(millis());
-        dmx_effect_init = false; 
-        overlay_object  = overlay_images_config.getJSONObject("basic").getJSONObject("sweep_horiz_black");
-        overlay_image   = loadImage(
+        dmx_effect_init         = false;
+        overlay_animation_count = overlay_images_config.getJSONObject("basic").getInt("animation_count");
+        overlay_object          = overlay_images_config.getJSONObject("basic").getJSONArray("animations").getJSONObject(round(random(0, overlay_animation_count - 1)));
+        println(" - Loading images for: " + overlay_object.getString("name"));
+        overlay_image           = loadImage(
           overlay_images_config.getJSONObject("basic").getString("path") +
           overlay_object.getJSONArray("images").getString(0)
         );
-        println(millis());
         
         dmx_effect_counter[2] = overlay_object.getJSONArray("images").size();
         dmx_effect_timer[1]   = millis() + overlay_object.getInt("frame_delay");
@@ -80,7 +80,7 @@ int[] dmx_effects_overlay(int[] data) {
       );
       
       // Increment frame      
-      //if (millis() > dmx_effect_timer[1]) {
+      if (millis() > dmx_effect_timer[1]) {
         // Next image if there are still frames
         dmx_effect_counter[1]++;
         if (dmx_effect_counter[1] < dmx_effect_counter[2]) {
@@ -92,10 +92,9 @@ int[] dmx_effects_overlay(int[] data) {
         }
         else {
           // End effect
-          println(millis());
           dmx_effect_timer[0] = millis() - 1;
         }
-      //}
+      }
       break;
       
       // Walk fixtures and determine if pixels have changed or not
