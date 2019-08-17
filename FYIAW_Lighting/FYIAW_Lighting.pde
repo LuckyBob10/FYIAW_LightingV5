@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.awt.*;
 import processing.serial.*;
 
-String config_file         = "../../config/Firehouse_2018.json";
+String config_file         = "../../config/Firehouse_2019.json";
 String overlay_config_file = "overlay_images/overlay_config.json";
 
 GraphicsEnvironment ge   = GraphicsEnvironment.getLocalGraphicsEnvironment();

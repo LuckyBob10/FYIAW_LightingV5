@@ -63,12 +63,12 @@
 		"dmx_groups": [
 			{
 				"name": "Firehouse Exterior Floods",
-				"description": "",
+				"description": "14 x 30W Flood Lights - Move Into Other Groups As Necessary",
 				"smoothing_frames": 15,
 				"smoothing_bias_positive": 0.1,
 				"smoothing_bias_negative": 0.9,
 				"brightness": 1,
-				"beat_effects": "False",
+				"beat_effects": "True",
 				"fixtures": [
 					{
 						"name": "Flood #1",
@@ -213,13 +213,192 @@
 				]
 			},
 
+			
+			{
+				"name": "Firehouse Interior Floods",
+				"description": "4 x 30W Flood Lights - Move Into Other Groups As Necessary",
+				"smoothing_frames": 30,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
+				"brightness": 0.75,
+				"beat_effects": "True",
+				"fixtures": [
+					{
+						"name": "Flood #15",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [43,44,45],
+						"capture_pixel": [330,150]
+					},
+					{
+						"name": "Flood #16",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [46,47,48],
+						"capture_pixel": [352,100]
+					},
+					{
+						"name": "Flood #17",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [49,50,51],
+						"capture_pixel": [374,50]
+					},
+					{
+						"name": "Flood #18",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [52,53,54],
+						"capture_pixel": [396,100]
+					}
+				]
+			},
+			
+
+			{
+				"name": "Arch Floods",
+				"description": "8 x 30W Flood Lights - Move As Necessary",
+				"smoothing_frames": 15,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
+				"brightness": 1,
+				"beat_effects": "True",
+				"fixtures": [
+					{
+						"name": "Flood #19",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [55,56,57],
+						"capture_pixel": [418,150]
+					},
+					{
+						"name": "Flood #20",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [58,59,60],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #21",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [61,62,63],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #22",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [64,65,66],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #23",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [67,68,69],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #24",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [70,71,72],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #25",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [73,74,75],
+						"capture_pixel": [440,100]
+					},
+					{
+						"name": "Flood #26",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 0,
+						"invert": "False",
+						"channels": [76,77,78],
+						"capture_pixel": [440,100]
+					}
+				]
+			},
+
+
+			{
+				"name": "Firehouse Large 100w Floods - Side of Building",
+				"description": "",
+				"smoothing_frames": 30,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
+				"brightness": 1,
+				"beat_effects": "True",
+				"fixtures": [
+					{
+						"name": "Large Flood #1",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 180,
+						"invert": "True",
+						"channels": [79,80,81],
+						"capture_pixel": [100,100]
+					},
+					{
+						"name": "Large Flood #2",
+						"type": "rgb",
+						"brightness": 1,
+						"brightness_clamp": [0, 255],
+						"hue_offset": 180,
+						"invert": "True",
+						"channels": [82,83,84],
+						"capture_pixel": [300,100]
+					}
+				]
+			},
+
 
 			{
 				"name": "Firehouse Strips - Floor 5",
-				"description": "",
-				"smoothing_frames": 10,
-				"smoothing_bias_positive": .1,
-				"smoothing_bias_negative": .9,
+				"description": "Box starts at DMX channel 250",
+				"smoothing_frames": 5,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
 				"brightness": 1,
 				"beat_effects": "True",
 				"fixtures": [
@@ -230,7 +409,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [112,113,114],
+						"channels": [250,251,252],
 						"capture_pixel": [53,160]
 					},
 					{
@@ -240,7 +419,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [115,116,117],
+						"channels": [253,254,255],
 						"capture_pixel": [106,160]
 					},
 					{
@@ -250,7 +429,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [118,119,120],
+						"channels": [256,257,258],
 						"capture_pixel": [159,160]
 					},
 					{
@@ -260,7 +439,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [121,122,123],
+						"channels": [259,260,261],
 						"capture_pixel": [212,160]
 					},
 					{
@@ -270,7 +449,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [124,125,126],
+						"channels": [262,263,264],
 						"capture_pixel": [265,160]
 					},
 					{
@@ -280,7 +459,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [127,128,129],
+						"channels": [265,266,267],
 						"capture_pixel": [318,160]
 					},
 					{
@@ -290,7 +469,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [130,131,132],
+						"channels": [268,269,270],
 						"capture_pixel": [371,160]
 					},
 					{
@@ -300,7 +479,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [133,134,135],
+						"channels": [271,272,273],
 						"capture_pixel": [424,160]
 					}
 				]
@@ -309,10 +488,10 @@
 
 			{
 				"name": "Firehouse Strips - Floor 4",
-				"description": "",
-				"smoothing_frames": 10,
-				"smoothing_bias_positive": .1,
-				"smoothing_bias_negative": .9,
+				"description": "Box starts at DMX channel 200",
+				"smoothing_frames": 5,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
 				"brightness": 1,
 				"beat_effects": "True",
 				"fixtures": [
@@ -323,7 +502,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [88,89,90],
+						"channels": [200,201,202],
 						"capture_pixel": [53,120]
 					},
 					{
@@ -333,7 +512,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [91,92,93],
+						"channels": [203,204,205],
 						"capture_pixel": [106,120]
 					},
 					{
@@ -343,7 +522,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [94,95,96],
+						"channels": [206,207,208],
 						"capture_pixel": [159,120]
 					},
 					{
@@ -353,7 +532,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [97,98,99],
+						"channels": [209,210,211],
 						"capture_pixel": [212,120]
 					},
 					{
@@ -363,7 +542,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [100,101,102],
+						"channels": [212,213,214],
 						"capture_pixel": [265,120]
 					},
 					{
@@ -373,7 +552,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [103,104,105],
+						"channels": [215,216,217],
 						"capture_pixel": [318,120]
 					},
 					{
@@ -383,7 +562,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [106,107,108],
+						"channels": [218,219,220],
 						"capture_pixel": [371,120]
 					},
 					{
@@ -393,7 +572,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [109,110,111],
+						"channels": [221,222,223],
 						"capture_pixel": [424,120]
 					}
 				]
@@ -402,10 +581,10 @@
 
 			{
 				"name": "Firehouse Strips - Floor 3",
-				"description": "",
-				"smoothing_frames": 10,
-				"smoothing_bias_positive": .1,
-				"smoothing_bias_negative": .9,
+				"description": "Box starts at DMX channel 150",
+				"smoothing_frames": 5,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
 				"brightness": 1,
 				"beat_effects": "True",
 				"fixtures": [
@@ -416,7 +595,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [64,65,66],
+						"channels": [150,151,152],
 						"capture_pixel": [53,80]
 					},
 					{
@@ -426,7 +605,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [67,68,69],
+						"channels": [153,154,155],
 						"capture_pixel": [106,80]
 					},
 					{
@@ -436,7 +615,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [70,71,72],
+						"channels": [156,157,158],
 						"capture_pixel": [159,80]
 					},
 					{
@@ -446,7 +625,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [73,74,75],
+						"channels": [159,160,161],
 						"capture_pixel": [212,80]
 					},
 					{
@@ -456,7 +635,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [76,77,78],
+						"channels": [162,163,164],
 						"capture_pixel": [265,80]
 					},
 					{
@@ -466,7 +645,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [79,80,81],
+						"channels": [165,166,167],
 						"capture_pixel": [318,80]
 					},
 					{
@@ -476,7 +655,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [82,83,84],
+						"channels": [168,169,170],
 						"capture_pixel": [371,80]
 					},
 					{
@@ -486,7 +665,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [85,86,87],
+						"channels": [171,172,173],
 						"capture_pixel": [424,80]
 					}
 				]
@@ -495,10 +674,10 @@
 
 			{
 				"name": "Firehouse Strips - Floor 2",
-				"description": "",
-				"smoothing_frames": 10,
-				"smoothing_bias_positive": .1,
-				"smoothing_bias_negative": .9,
+				"description": "Box starts at DMX channel 100",
+				"smoothing_frames": 5,
+				"smoothing_bias_positive": 0.1,
+				"smoothing_bias_negative": 0.9,
 				"brightness": 1,
 				"beat_effects": "True",
 				"fixtures": [
@@ -509,7 +688,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [43,44,45],
+						"channels": [100,101,102],
 						"capture_pixel": [53,40]
 					},
 					{
@@ -519,7 +698,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [46,47,48],
+						"channels": [103,104,105],
 						"capture_pixel": [106,40]
 					},
 					{
@@ -529,7 +708,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [49,50,51],
+						"channels": [106,107,108],
 						"capture_pixel": [159,40]
 					},
 					{
@@ -539,7 +718,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [52,53,54],
+						"channels": [109,110,111],
 						"capture_pixel": [212,40]
 					},
 					{
@@ -549,7 +728,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [55,56,57],
+						"channels": [112,113,114],
 						"capture_pixel": [318,40]
 					},
 					{
@@ -559,7 +738,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [58,59,60],
+						"channels": [115,116,117],
 						"capture_pixel": [371,40]
 					},
 					{
@@ -569,7 +748,7 @@
 						"brightness_clamp": [0, 255],
 						"hue_offset": 0,
 						"invert": "False",
-						"channels": [61,62,63],
+						"channels": [118,119,120],
 						"capture_pixel": [424,40]
 					}
 				]

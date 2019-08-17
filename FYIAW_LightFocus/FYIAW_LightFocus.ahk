@@ -6,10 +6,12 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 SetTitleMatchMode 2
-SetTimer LightFocus, 2500
 FYIAWWinName = FYIAW Lv
 VisualizerWinName = Visualizations
 WinTransitionTime = 25
+
+SetTimer LightFocus, 2500
+SetTimer WinampFocus, 1800000
 
 1::
 IfWinExist %VisualizerWinName%
@@ -38,12 +40,15 @@ IfWinExist %VisualizerWinName%
 return
 
 LightFocus:
-IfWinExist Winamp
-{
-	WinActivate Winamp
-}
 IfWinExist %FYIAWWinName%
 {
 	WinActivate %FYIAWWinName%
+}
+return
+
+WinampFocus:
+IfWinExist Winamp
+{
+	WinActivate Winamp
 }
 return

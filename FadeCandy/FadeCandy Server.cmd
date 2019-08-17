@@ -1,3 +1,3 @@
 @echo off
 color 1f
-C:\Development\FadeCandy\fcserver.exe C:\Development\FadeCandy\FYIAW.json
+\Development\FYIAW_LightingV5\FadeCandy\fcserver.exe \Development\FYIAW_LightingV5\FadeCandy\FYIAW.json
